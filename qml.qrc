@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="launcher.qml">modules/pages/launcher/launcher.qml</file>
+        <file alias="MyClass.qml">modules/pages/myClass/MyClass.qml</file>
+    </qresource>
+</RCC>
