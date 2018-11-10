@@ -1,5 +1,5 @@
 #include "dispatcher.h"
-#include "modules/pages/myClass/MyClass.h"
+#include "modules/pages/generator/presenter/generator.h"
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -26,5 +26,5 @@ Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
 
 void Dispatcher::registerTypes()
 {
-    qmlRegisterType<MyClass>("MyClass", 1, 0, "MyClass");
+    qmlRegisterType<Generator>("Generator", 1, 0, "Generator");
 }

@@ -1,12 +1,11 @@
 #ifndef FORMAT_UTIL_H
 #define FORMAT_UTIL_H
 
-#include "stacer-core_global.h"
+#include <QString>
 
-class STACERCORESHARED_EXPORT FormatUtil
-{
+class FormatUtil {
 public:
-    static QString formatBytes(const quint64 &bytes);
+    static QString formatBytes(const quint64& bytes);
 
 public:
     static const quint64 KIBI = 1024;

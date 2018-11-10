@@ -1,0 +1,36 @@
+#include <QRegExp>
+#include <QVariant>
+#include <glib.h>
+#include <iostream>
+#include <regex>
+
+#include "ConvertUtil.h"
+#include "RegexUtil.h"
+#include "util/cpp/FileUtil.h"
+
+RegexUtil::RegexUtil()
+{
+}
+
+char* RegexUtil::findReplaseRegx(const char* pattern, const char* rawAlternative, char* target, Replacement replacement)
+{
+    GError* err = nullptr;
+    GRegex* regex;
+    GMatchInfo* uMatchInfo;
+    char* alternative;
+
+    regex = g_regex_new(pattern, GRegexCompileFlags::G_REGEX_JAVASCRIPT_COMPAT, GRegexMatchFlags::G_REGEX_MATCH_NOTEMPTY_ATSTART, &err);
+    g_regex_match(regex, target, GRegexMatchFlags::G_REGEX_MATCH_NOTEMPTY_ATSTART, &uMatchInfo);
+    if (g_match_info_matches(uMatchInfo)) {
+        gchar* result = g_match_info_fetch(uMatchInfo, 0);
+        if (replacement == Replacement::UPPERCASE) {
+            alternative = ConvertUtil::stringToCharPointer(FileUtil::upperCaseAllChars(rawAlternative));
+        } else if (replacement == Replacement::LOWERCASE) {
+            alternative = ConvertUtil::stringToCharPointer(FileUtil::lowerCaseAllChars(rawAlternative));
+        } else if (replacement == Replacement::CAMELCASE) {
+            alternative = ConvertUtil::stringToCharPointer(FileUtil::capitilizeFirstChar(rawAlternative));
+        }
+        target = g_regex_replace(regex, target, strlen(target), 0, alternative, GRegexMatchFlags::G_REGEX_MATCH_NOTEMPTY_ATSTART, NULL);
+    }
+    return target;
+}

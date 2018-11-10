@@ -15,6 +15,6 @@ Window {
     }
 
     Component.onCompleted: {
-        pageLoader.source = "qrc:/MyClass.qml"
+        pageLoader.source = "qrc:/Generator.qml"
     }
 }

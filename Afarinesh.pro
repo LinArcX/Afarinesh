@@ -14,6 +14,20 @@ HEADERS += $$files(modules/*.h, true) \
 
 RESOURCES += qml.qrc
 
+############### Make Directory into Build Directory After Build ###############
+mytarget.commands += $${QMAKE_MKDIR} $$shell_path($${OUT_PWD}/templates/QtCpp)
+first.depends = $(first) mytarget
+export(first.depends)
+export(mytarget.commands)
+QMAKE_EXTRA_TARGETS += first mytarget
+
+################ Copy Files to Build Directory After Build ###############
+copydata.commands = $(COPY_DIR) $$PWD/templates/* $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata
+
 ############### Deployment ###############
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

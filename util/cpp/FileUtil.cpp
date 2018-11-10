@@ -1,4 +1,4 @@
-#include "file_util.h"
+#include "FileUtil.h"
 #include <iostream>
 
 FileUtil::FileUtil()
@@ -8,23 +8,17 @@ FileUtil::FileUtil()
 QString FileUtil::readStringFromFile(const QString& path, const QIODevice::OpenMode& mode)
 {
     QSharedPointer<QFile> file(new QFile(path));
-
     QString data;
-
     if (file->open(mode)) {
-
         data = file->readAll();
-
         file->close();
     }
-
     return data;
 }
 
 QStringList FileUtil::readListFromFile(const QString& path, const QIODevice::OpenMode& mode)
 {
     QStringList list = FileUtil::readStringFromFile(path, mode).trimmed().split("\n");
-
     return list;
 }
 
@@ -52,11 +46,14 @@ std::string FileUtil::capitilizeFirstChar(std::string word)
 {
     bool cap = true;
     for (int i = 0; i <= word.length(); i++) {
-        if (cap && word[i] >= 97 && word[i] <= 122) {
+        if (i == 0 && word[i] <= 122 && word[i] >= 97) {
             word[i] = word[i] - 32;
             cap = false;
         }
-        if (word[i] >= 65 && word[i] <= 90) {
+        //        if (cap ) {
+
+        //        }
+        else if (i != 0 && word[i] >= 65 && word[i] <= 90) {
             word[i] = word[i] + 32;
         }
     }
@@ -126,6 +123,13 @@ QString FileUtil::determineWordType(QString word)
 
 bool FileUtil::writeFile(const QString& path, const QString& content, const QIODevice::OpenMode& mode)
 {
+    //    QString filename = "Data.txt";
+    //    QFile file(filename);
+    //    if (file.open(QIODevice::ReadWrite)) {
+    //        QTextStream stream(&file);
+    //        stream << "something" << endl;
+    //    }
+
     QFile file(path);
 
     if (file.open(mode)) {
@@ -155,21 +159,26 @@ QStringList FileUtil::directoryList(const QString& path)
 quint64 FileUtil::getFileSize(const QString& path)
 {
     quint64 totalSize = 0;
-
     QFileInfo info(path);
-
     if (info.exists()) {
         if (info.isFile()) {
             totalSize += info.size();
         } else if (info.isDir()) {
-
             QDir dir(path);
-
             for (const QFileInfo& i : dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files | QDir::Dirs)) {
                 totalSize += getFileSize(i.absoluteFilePath());
             }
         }
     }
-
     return totalSize;
+}
+
+bool FileUtil::checkExistDirectory(QString dir)
+{
+    return QDir(dir).exists();
+}
+
+bool FileUtil::makeDirectory(QString dir)
+{
+    return QDir().mkdir(dir);
 }
