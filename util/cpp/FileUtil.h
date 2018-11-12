@@ -26,6 +26,8 @@ public:
     static std::string upperCaseAllChars(std::string word);
     static std::string lowerCaseAllChars(std::string word);
     static std::string capitilizeFirstChar(std::string word);
+    static bool fileExists(QString path);
+    static bool dirExists(QString path);
 
 private:
     FileUtil();

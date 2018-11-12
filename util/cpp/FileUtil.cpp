@@ -147,12 +147,9 @@ bool FileUtil::writeFile(const QString& path, const QString& content, const QIOD
 QStringList FileUtil::directoryList(const QString& path)
 {
     QDir dir(path);
-
     QStringList list;
-
-    for (const QFileInfo& info : dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files))
+    for (const QFileInfo& info : dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs))
         list << info.fileName();
-
     return list;
 }
 
@@ -181,4 +178,26 @@ bool FileUtil::checkExistDirectory(QString dir)
 bool FileUtil::makeDirectory(QString dir)
 {
     return QDir().mkdir(dir);
+}
+
+bool FileUtil::fileExists(QString path)
+{
+    QFileInfo check_file(path);
+    // check if file exists and if yes: Is it really a file and no directory?
+    if (check_file.exists() && check_file.isFile()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool FileUtil::dirExists(QString path)
+{
+    QFileInfo check_file(path);
+    // check if file exists and if yes: Is it really a file and no directory?
+    if (check_file.exists() && check_file.isDir()) {
+        return true;
+    } else {
+        return false;
+    }
 }

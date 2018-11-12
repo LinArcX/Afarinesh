@@ -1,0 +1,4 @@
+name: "QtCpp"
+author: "LinArcX"
+icon: "assets/qtcpp.png"
+comment: "A generator to generate mpv based template Qt applicaitons."
