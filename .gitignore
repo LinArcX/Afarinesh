@@ -1,5 +1,7 @@
 # Prerequisites
 *.d
+Afarinesh.pro.user
+garbage/
 
 # Compiled Object files
 *.slo

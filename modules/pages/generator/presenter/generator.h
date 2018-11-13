@@ -20,16 +20,9 @@ public:
     //        COMMENT
     //    };
 
-    Q_INVOKABLE void isDirExists(QVariant rawDir);
-    Q_INVOKABLE void listTemplates(QVariant path);
-    Q_INVOKABLE void getTemplateInfo(QVariant rawDir);
     Q_INVOKABLE void generate(QVariant rawAlternative, QVariant rawPath, QVariant rawFileName);
 
 signals:
-    void fileGenerated(QVariant file);
-    void templatesReady(QStringList templates);
-    void templateInfoReady(QStringList templateInfo);
-    void configFileExists(bool isExists);
 };
 
 #endif // GENERATOR_H

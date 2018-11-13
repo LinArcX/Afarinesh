@@ -4,7 +4,7 @@
 
 #include "dispatcher.h"
 #include "modules/pages/generator/presenter/generator.h"
-#include "util/cpp/QtUtil.h"
+#include "modules/pages/launcher/presenter/launcher.h"
 
 Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
     : QObject(parent)
@@ -27,5 +27,5 @@ Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
 void Dispatcher::registerTypes()
 {
     qmlRegisterType<Generator>("Generator", 1, 0, "Generator");
-    qmlRegisterType<QtUtil>("QtUtil", 1, 0, "QtUtil");
+    qmlRegisterType<Launcher>("Launcher", 1, 0, "Launcher");
 }

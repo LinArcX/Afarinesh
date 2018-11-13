@@ -1,6 +1,6 @@
 <RCC>
-    <qresource prefix="/">
-        <file alias="launcher.qml">modules/pages/launcher/launcher.qml</file>
+    <qresource prefix="/pages">
+        <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
         <file alias="Generator.qml">modules/pages/generator/view/Generator.qml</file>
         <file alias="Scene.qml">modules/pages/scene/Scene.qml</file>
     </qresource>

@@ -3,7 +3,9 @@ import QtQuick.Controls 2.3
 
 Rectangle {
     anchors.fill: parent
-//    color: "green"
+    color: "#DCDCDC"
+    Button {
+        anchors.centerIn: parent
+        text: "click me!"
+    }
 }
-
-

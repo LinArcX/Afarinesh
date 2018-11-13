@@ -16,48 +16,6 @@ Generator::Generator(QObject* parent)
 {
 }
 
-void Generator::isDirExists(QVariant rawDir)
-{
-    QString dir = rawDir.toString().split("//")[1];
-    const std::string configFile = dir.toStdString() + "/afarinesh.yaml";
-    bool isConfiFileExists = FileUtil::fileExists(QString::fromStdString(configFile));
-    if (isConfiFileExists) {
-        emit configFileExists(true);
-    } else {
-        emit configFileExists(false);
-    }
-}
-
-void Generator::listTemplates(QVariant path)
-{
-    QStringList templates;
-    bool templatesDirExists = FileUtil::dirExists(path.toString() + "/templates");
-    if (templatesDirExists) {
-        templates = FileUtil::directoryList(path.toString().split("//")[1] + "/templates");
-        emit templatesReady(templates);
-    } else {
-        emit templatesReady(*new QStringList());
-    }
-}
-
-void Generator::getTemplateInfo(QVariant rawDir)
-{
-    QStringList info;
-    QString dir = rawDir.toString().split("//")[1];
-    const std::string configFile = dir.toStdString() + "/afarinesh.yaml";
-    //    bool isConfiFileExists = FileUtil::fileExists(QString::fromStdString(configFile));
-    QString name = QString::fromStdString(YamlUtil::getValue(configFile, "name"));
-    QString author = QString::fromStdString(YamlUtil::getValue(configFile, "author"));
-    QString icon = QString::fromStdString(YamlUtil::getValue(configFile, "icon"));
-    const std::string iconPath = dir.toStdString() + icon.toStdString();
-    QString comment = QString::fromStdString(YamlUtil::getValue(configFile, "comment"));
-    info.append(name);
-    info.append(author);
-    info.append(icon);
-    info.append(comment);
-    emit templateInfoReady(info);
-}
-
 void Generator::generate(QVariant rawAlternative, QVariant rawPath, QVariant rawFileName)
 {
     if (!FileUtil::checkExistDirectory(rawPath.toString())) {

@@ -3,32 +3,31 @@
 
 #include "QtUtil.h"
 
-QtUtil::QtUtil(QObject* parent)
+QtUtil::QtUtil()
 {
 }
 
-void QtUtil::getAllKeys(QString organization, QString application, QString group)
+QStringList QtUtil::getAllKeys(QString organization, QString application, QString group)
 {
-    QVariantList keys;
+    QStringList keys;
     QSettings settings(organization, application);
     settings.beginGroup(group);
     QStringList rawKeys = settings.allKeys();
     if (keys.isEmpty()) {
-        emit keysIsReady(*new QVariantList());
     } else {
         for (QString key : rawKeys) {
-            keys.append(QVariant::fromValue(settings.value(key).toString()));
+            keys.append(settings.value(key).toString());
         }
-        emit keysIsReady(keys);
     }
     settings.endGroup();
+    return keys;
 }
 
-void QtUtil::addNewTemplates(QString organization, QString application, QString group, QString key, QString value)
+void QtUtil::setKeyValue(QString organization, QString application, QString group, QString key, QString value)
 {
     QStringList values;
     QSettings settings(organization, group);
-    settings.beginGroup("Templates");
+    settings.beginGroup(application);
     settings.value(key, value);
     settings.endGroup();
 }
