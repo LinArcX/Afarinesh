@@ -10,9 +10,11 @@ class Launcher : public QObject {
 public:
     explicit Launcher(QObject* parent = nullptr);
     Q_INVOKABLE void getAllKeys();
+    Q_INVOKABLE void removeItem(QVariant key);
     Q_INVOKABLE void hasConfig(QVariant rawPath);
     Q_INVOKABLE void listTemplates(QVariant rawPath);
     Q_INVOKABLE void templateInfo(QVariant rawPath);
+    Q_INVOKABLE void savePath(QVariant key, QVariant rawPath);
 
 signals:
     void allKeysReady(QStringList keys);

@@ -1,5 +1,5 @@
 ############### General ###############
-QT += qml quick quickcontrols2 widgets
+QT += core qml quick quickcontrols2 widgets
 CONFIG += c++11
 
 ############### Compiler Flgas ###############

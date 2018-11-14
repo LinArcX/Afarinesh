@@ -2,7 +2,6 @@
     <qresource prefix="/pages">
         <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
         <file alias="Generator.qml">modules/pages/generator/view/Generator.qml</file>
-        <file alias="Scene.qml">modules/pages/scene/Scene.qml</file>
     </qresource>
     <qresource prefix="/util">
         <file alias="qml/LinArcxToast.qml">util/qml/components/toast/LinArcxToast.qml</file>
@@ -11,5 +10,7 @@
     <qresource prefix="/images">
         <file alias="warning.svg">util/images/warning.svg</file>
         <file alias="sad.svg">util/images/sad.svg</file>
+        <file alias="add-folder.svg">util/images/add-folder.svg</file>
+        <file alias="remove-folder.svg">util/images/remove-folder.svg</file>
     </qresource>
 </RCC>

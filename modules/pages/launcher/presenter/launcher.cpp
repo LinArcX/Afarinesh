@@ -4,7 +4,9 @@
 #include <QVariant>
 #include <iostream>
 
+#include "modules/core/dispatcher/dispatcherMacro.h"
 #include "modules/pages/launcher/presenter/launcher.h"
+
 #include "util/cpp/ConvertUtil.h"
 #include "util/cpp/FileUtil.h"
 #include "util/cpp/QtUtil.h"
@@ -19,8 +21,13 @@ Launcher::Launcher(QObject* parent)
 
 void Launcher::getAllKeys()
 {
-    auto keys = QtUtil::getAllKeys("afarinesh", "afarinesh", "Templates");
+    QStringList keys = QtUtil::getAllKeys(ORGANIZATION, APPLICATION, TEMPLATES_GROUP);
     emit allKeysReady(keys);
+}
+
+void Launcher::removeItem(QVariant key)
+{
+    QtUtil::removeKey(ORGANIZATION, APPLICATION, TEMPLATES_GROUP, key.toString());
 }
 
 void Launcher::hasConfig(QVariant rawPath)
@@ -62,5 +69,11 @@ void Launcher::templateInfo(QVariant rawPath)
     info.append(author);
     info.append(icon);
     info.append(comment);
+    info.append(rawPath.toString() + "/templates");
     emit templateInfoReady(info);
+}
+
+void Launcher::savePath(QVariant key, QVariant rawPath)
+{
+    QtUtil::setKeyValue(ORGANIZATION, APPLICATION, TEMPLATES_GROUP, key.toString(), rawPath.toString());
 }
