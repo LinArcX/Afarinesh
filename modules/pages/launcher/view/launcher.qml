@@ -2,9 +2,7 @@ import QtQuick 2.11
 import QtQuick.Window 2.11
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.3
-
 import Launcher 1.0
-
 import "qrc:/util/qml/"
 
 Window {
@@ -13,10 +11,19 @@ Window {
     visible: true
     property string path
     property string fPath
+    property var templatesArray
 
     //    color: "#D7CCC8"//"#DCDCDC"
     Launcher {
         id: qLauncher
+    }
+
+    ////// Popup
+    LinArcxDialog {
+        id: mPopUp
+        mImage: "qrc:/images/sad.svg"
+        mTitle: "Are you Sure?"
+        mBody: "If You delete this template, it will be deleted from settings too. are you sure?"
     }
 
     Rectangle {
@@ -24,6 +31,7 @@ Window {
         width: parent.width / 4
         height: parent.height - 40
         color: "#424242" //"#767676"
+        z: 1
 
         MouseArea {
             id: qMouseAreaParent
@@ -36,36 +44,6 @@ Window {
                 qRemove.enabled = false
                 qRemove.opacity = 0.3
             }
-            visible: true
-
-            // height: 200
-            //anchors.fill: parent
-            //anchors.top: qListView.bottom
-            //z: 1
-            Rectangle {
-                id: qsaeed
-                width: parent.width
-                anchors.bottom: parent.bottom
-                color: "green"
-                //                z: 1
-                //height: 200
-                //                            anchors.left: parent.left
-                //                            anchors.top: parent.top
-                //anchors.fill: parent
-            }
-            //             height: 600
-            //            cursorShape: Qt.CrossCursor
-            //            hoverEnabled: true
-
-            //}
-            //            onHoveredChanged: {
-            //                //qRectContent.enabled = false
-            //                //qMouseAreaParent.enabled = true
-            //                //qMouseAreaParent.z = 5
-            //                console.log("hover")
-            //                console.log(qMouseAreaParent.enabled)
-            ////                console.log(qMouseInner.enabled)
-            //            }
         }
 
         ListModel {
@@ -75,7 +53,6 @@ Window {
         ListView {
             id: qListView
             width: parent.width
-            //height: 400
             model: qModel
             clip: true
             flickableDirection: Flickable.VerticalFlick
@@ -83,53 +60,27 @@ Window {
             ScrollBar.vertical: ScrollBar {
             }
 
-            //            height: qProjects.height
-            //implicitHeight: qProjects.height
-            //            onChildrenChanged: {
-            //                console.log(qListView.children[1].height)
-            //                qListView.height += qListView.children[1].heigh
-            //                qsaeed.height += qProjects.height - qListView.height
-            //                qMouseAreaParent.height = qProjects.height - qListView.height
-            //            }
-            //Component.onCompleted: console.log(qListView.contentHeight)
-            //            onChildrenChanged: console.log(qListView.height)
             delegate: Rectangle {
                 id: qRectContent
-//                anchors.fill: parent
                 width: parent.width
-                //height: 400
                 color: "transparent"
-                //                z: 1
-                //onChildrenChanged: console.log("as")
+
                 onHeightChanged: {
-                    qsaeed.height += qProjects.height - qRectContent.height
                     qMouseAreaParent.height = qProjects.height - qRectContent.height
-                    console.log(qRectContent.height)
-                    //console.log(qListView.children[1].height)
-                    //qListView.height += qListView.children[1].heigh
                 }
-                //                                height: qNameLabel.height + qAuthorLabel.height + qCommentLabel.height
-                //                                        + qComment.height + qPath.height + qPathLabel.height + 20
+
                 Component.onCompleted: {
                     height = qNameLabel.height + qAuthorLabel.height + qCommentLabel.height
-                            + qComment.height + qPath.height + qPathLabel.height + 20
-                    qListView.height = height
+                            + qComment.height + qPath.height + qPathLabel.height + 30
+                    qListView.height += height
                 }
 
                 MouseArea {
                     id: qMouseInner
                     anchors.fill: parent
-                    z: 1
-                    //                    hoverEnabled: true
-                    //                    onHoveredChanged: console.log("t")
-//                    Rectangle {
-//                        anchors.fill: parent
-//                        color: "red"
-//                        z: 3
-//                    }
                     onClicked: {
                         qPageLoader.setSource("qrc:/pages/Generator.qml", {
-                                                  "qModel.name": "saeed"
+                                                  "models": templatesArray
                                               })
                         qListView.currentIndex = index
                         qRemove.opacity = 1
@@ -246,6 +197,7 @@ Window {
         height: 40
         anchors.top: qProjects.bottom
         color: "#212121"
+        z: 1
         Image {
             id: qAdd
             source: "qrc:/images/add-folder.svg"
@@ -258,9 +210,7 @@ Window {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    qPageLoader.source = ""
-                    qImage.visible = true
-                    qButton.visible = true
+                    qFileDialog.open()
                 }
             }
         }
@@ -275,18 +225,58 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             enabled: false
             opacity: 0.3
+
+            LinArcxToolTip {
+                id: qRemoveTooTip
+                mother: qRemove
+                direction: 3
+                title: "Remove Template"
+            }
+
+            states: [
+                State {
+                    name: "scale"
+                    PropertyChanges {
+                        target: qRemove
+                        scale: 0.9
+                    }
+                },
+                State {
+                    name: "normal"
+                    PropertyChanges {
+                        target: qRemove
+                        scale: 1
+                    }
+                }
+            ]
+
+            transitions: Transition {
+                ScaleAnimator {
+                    duration: 100
+                }
+            }
+
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    qModel.remove(qListView.currentIndex)
-                    qLauncher.removeItem(qListView.currentItem)
-                    qPageLoader.source = ""
-                    if (qModel.count == 0) {
-                        qImage.visible = true
-                        qButton.visible = true
-                        qRemove.visible = false
-                    }
+                    mPopUp.open()
+//                    qModel.remove(qListView.currentIndex)
+//                    qLauncher.removeItem(qListView.currentItem)
+//                    qPageLoader.source = ""
+//                    if (qModel.count == 0) {
+//                        qImage.visible = true
+//                        qButton.visible = true
+//                        qRemove.visible = false
+//                    }
+                }
+                onEntered: {
+                    qRemove.state = "scale"
+                    qRemoveTooTip.visible = true
+                }
+                onExited: {
+                    qRemove.state = "normal"
+                    qRemoveTooTip.visible = false
                 }
             }
         }
@@ -331,16 +321,25 @@ Window {
         width: parent.width / 4 * 3
         height: parent.height
         anchors.left: qProjects.right
-        onSourceChanged: animation.running = true
+
+        onStatusChanged: {
+            if (status) {
+                console.log("Ready")
+                animation.running = true
+            } else {
+                console.log("Not Ready!")
+                animation.running = false
+            }
+        }
 
         NumberAnimation {
             id: animation
             target: qPageLoader.item
             property: "x"
-            from: 0
-            to: window.width // - qPageLoader.item.width
+            from: -(window.minimumWidth)
+            to: 0
             duration: 1000
-            easing.type: Easing.InExpo
+            easing.type: Easing.OutCirc
         }
     }
 
@@ -370,6 +369,7 @@ Window {
             if (templates.length === 0) {
                 messages.displayMessage("There is no template for generate.")
             } else {
+                templatesArray = templates
                 qLauncher.templateInfo(path)
             }
         }
@@ -378,7 +378,6 @@ Window {
             if (templateInfo.length === 0) {
                 messages.displayMessage("config file isn't valid!")
             } else {
-
                 qModel.append({
                                   "name": templateInfo[0],
                                   "author": templateInfo[1],
@@ -387,9 +386,11 @@ Window {
                                   "path": templateInfo[4]
                               })
                 qLauncher.savePath(templateInfo[0], path)
-                // console.log(qProjects.height - qListView.height)
-                //qMouseAreaParent.height = qProjects.height - qListView.height
-                //                qMouseAreaParent.anchors.top = qListView.bottom
+                qPageLoader.setSource("qrc:/pages/Generator.qml", {
+                                          "models": templatesArray
+                                      })
+                qRemove.opacity = 1
+                qRemove.enabled = true
             }
         }
     }
