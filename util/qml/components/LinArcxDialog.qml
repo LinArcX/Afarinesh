@@ -20,24 +20,6 @@ Popup {
         source: qFont ? qFont : ""
     }
 
-
-    //    enter: Transition {
-    //        NumberAnimation {
-    //            property: "y"
-    //            from: y
-    //            to: y + 20
-    //            duration: 250
-    //        }
-    //    }
-    //    exit: Transition {
-    //        NumberAnimation {
-    //            property: "y"
-    //            from: y
-    //            to: y - 20
-    //            duration: 30
-    //            easing.type: "InCirc"
-    //        }
-    //    }
     enter: Transition {
         ScaleAnimator {
             duration: 200
@@ -46,15 +28,32 @@ Popup {
             to: 1
             easing.type: "InCurve"
         }
+        NumberAnimation {
+            property: "y"
+            from: y
+            to: y + 30
+            duration: 20
+        }
+        NumberAnimation {
+            property: "opacity"
+            from: 0
+            to: 1
+            duration: 20
+        }
     }
 
     exit: Transition {
-        ScaleAnimator {
-            duration: 100
-            target: parent
+        NumberAnimation {
+            property: "y"
+            from: y
+            to: y - 30
+            duration: 200
+        }
+        NumberAnimation {
+            property: "opacity"
             from: 1
-            to: 0.5
-            easing.type: "OutCurve"
+            to: 0
+            duration: 200
         }
     }
 

@@ -261,14 +261,14 @@ Window {
                 hoverEnabled: true
                 onClicked: {
                     mPopUp.open()
-//                    qModel.remove(qListView.currentIndex)
-//                    qLauncher.removeItem(qListView.currentItem)
-//                    qPageLoader.source = ""
-//                    if (qModel.count == 0) {
-//                        qImage.visible = true
-//                        qButton.visible = true
-//                        qRemove.visible = false
-//                    }
+                    //                    qModel.remove(qListView.currentIndex)
+                    //                    qLauncher.removeItem(qListView.currentItem)
+                    //                    qPageLoader.source = ""
+                    //                    if (qModel.count == 0) {
+                    //                        qImage.visible = true
+                    //                        qButton.visible = true
+                    //                        qRemove.visible = false
+                    //                    }
                 }
                 onEntered: {
                     qRemove.state = "scale"

@@ -8,6 +8,7 @@
         <file alias="qml/LinArcxToastComponent.qml">util/qml/components/toast/LinArcxToastComponent.qml</file>
         <file alias="qml/LinArcxToolTip.qml">util/qml/components/LinArcxToolTip.qml</file>
         <file alias="qml/LinArcxDialog.qml">util/qml/components/LinArcxDialog.qml</file>
+        <file alias="qml/LinArcxTextField.qml">util/qml/components/LinArcxTextField.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="warning.svg">util/images/warning.svg</file>

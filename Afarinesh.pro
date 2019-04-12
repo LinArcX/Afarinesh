@@ -16,7 +16,7 @@ RESOURCES += qml.qrc
 
 ############### Libs ###############
 unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += glib-2.0 yaml-0.1
+unix: PKGCONFIG += glib-2.0 yaml-0.1 poppler-qt5
 
 ############### Make Directory into Build Directory After Build ###############
 mytarget.commands += $${QMAKE_MKDIR} $$shell_path($${OUT_PWD}/templates/QtCpp)
@@ -31,8 +31,6 @@ first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
-
-
 
 ############### Deployment ###############
 qnx: target.path = /tmp/$${TARGET}/bin
