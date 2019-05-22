@@ -29,34 +29,34 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        if (direction == 0) {
+        if (direction == 0) { // top-left
             qTooTip.anchors.top = mother.top
             qTooTip.anchors.topMargin = -mother.height
             qTooTip.anchors.right = mother.right
             qTooTip.anchors.rightMargin = mother.width
-        } else if (direction == 1) {
+        } else if (direction == 1) { // top
             qTooTip.anchors.top = mother.top
             qTooTip.anchors.topMargin = -mother.height
             qTooTip.anchors.horizontalCenter = mother.horizontalCenter
-        } else if (direction == 2) {
+        } else if (direction == 2) { // top-right
             qTooTip.anchors.top = mother.top
             qTooTip.anchors.topMargin = -mother.height
             qTooTip.anchors.left = mother.left
             qTooTip.anchors.leftMargin = mother.width
-        } else if (direction == 3) {
+        } else if (direction == 3) { // right
             qTooTip.anchors.right = mother.right
             qTooTip.anchors.rightMargin = -qTitleToolTip.width - 5
             qTooTip.anchors.verticalCenter = mother.verticalCenter
-        } else if (direction == 4) {
+        } else if (direction == 4) { // right-bottom
             qTooTip.anchors.bottom = mother.bottom
             qTooTip.anchors.bottomMargin = -mother.height
             qTooTip.anchors.left = mother.left
             qTooTip.anchors.leftMargin = mother.width
-        } else if (direction == 5) {
+        } else if (direction == 5) { // bottom
 
-        } else if (direction == 6) {
+        } else if (direction == 6) { // bottom-left
 
-        } else if (direction == 7) {
+        } else if (direction == 7) { // left
             qTooTip.anchors.left = mother.left
             qTooTip.anchors.leftMargin = -qTitleToolTip.width - 5
             qTooTip.anchors.verticalCenter = mother.verticalCenter

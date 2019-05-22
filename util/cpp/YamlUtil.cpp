@@ -3,7 +3,6 @@
 #include <yaml.h>
 
 #include "YamlUtil.h"
-#include "modules/pages/generator/presenter/generator.h"
 
 YamlUtil::YamlUtil()
 {

@@ -3,7 +3,7 @@
 #include <QQuickStyle>
 
 #include "dispatcher.h"
-#include "modules/pages/generator/presenter/generator.h"
+#include "modules/pages/addProject/presenter/addProject.h"
 #include "modules/pages/launcher/presenter/launcher.h"
 
 Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
@@ -26,6 +26,6 @@ Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
 
 void Dispatcher::registerTypes()
 {
-    qmlRegisterType<Generator>("Generator", 1, 0, "Generator");
-    qmlRegisterType<Launcher>("Launcher", 1, 0, "Launcher");
+    qmlRegisterType<AddProject>("AddProjectClass", 1, 0, "AddProjectClass");
+    qmlRegisterType<Launcher>("LauncherClass", 1, 0, "LauncherClass");
 }

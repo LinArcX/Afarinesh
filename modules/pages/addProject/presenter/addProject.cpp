@@ -4,7 +4,7 @@
 #include <QVariant>
 #include <iostream>
 
-#include "modules/pages/generator/presenter/generator.h"
+#include "modules/pages/addProject/presenter/addProject.h"
 #include "util/cpp/ConvertUtil.h"
 #include "util/cpp/FileUtil.h"
 #include "util/cpp/RegexUtil.h"
@@ -12,20 +12,25 @@
 
 using namespace std;
 
-Generator::Generator(QObject* parent)
+AddProject::AddProject(QObject* parent)
 {
+    // Full address of files --> find . | ag "/.*(?<=\{\{).+?(?=\}\})[^/]*$" | awk -F/ '{print $NF}'
+
+    // Full Address of vars --> ag "(?<=\{\{).+?(?=\}\})" --hidden
+
+    // List of vars --> ag "(?<=\{\{).+?(?=\}\})" --hidden | awk -F: '{print $NF}' | grep -oP '(?<=\{\{).+?(?=\}\})'
 }
 
-void Generator::generate(QVariant rawAlternative, QVariant rawPath, QVariant rawFileName)
+void AddProject::generateProject(QVariant name, QVariant path)
 {
-    if (!FileUtil::checkExistDirectory(rawPath.toString())) {
-        FileUtil::makeDirectory(rawPath.toString());
+    if (!FileUtil::checkExistDirectory(path.toString())) {
+        FileUtil::makeDirectory(path.toString());
     }
     QString targetPath = QDir::currentPath() + "/QtCpp/feature/feature.cpp";
     string rawTarget = FileUtil::readStringFromFile(targetPath).toUtf8().toStdString();
     char* target = ConvertUtil::stringToCharPointer(rawTarget);
 
-    string strAlternative = rawAlternative.toString().toStdString();
+    string strAlternative = "rawAlternative.toString().toStdString();";
     const char* alternative = strAlternative.c_str();
 
     const char* cPattern = "\\{\\*c\\*}";
@@ -38,6 +43,6 @@ void Generator::generate(QVariant rawAlternative, QVariant rawPath, QVariant raw
     target = RegexUtil::findReplaseRegx(lPattern, alternative, target, RegexUtil::Replacement::LOWERCASE);
     cout << target;
 
-    FileUtil::writeFile(rawPath.toString() + rawFileName.toString(), target);
+    FileUtil::writeFile(path.toString() + name.toString(), target);
     delete[] target;
 }

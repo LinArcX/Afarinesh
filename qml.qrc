@@ -1,7 +1,10 @@
 <RCC>
     <qresource prefix="/pages">
         <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
-        <file alias="Generator.qml">modules/pages/generator/view/Generator.qml</file>
+        <file alias="AddProject.qml">modules/pages/addProject/view/AddProject.qml</file>
+        <file alias="AddFeature.qml">modules/pages/addFeature/AddFeature.qml</file>
+        <file alias="ListProjects.qml">modules/pages/listProjects/ListPorjects.qml</file>
+        <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
     </qresource>
     <qresource prefix="/util">
         <file alias="qml/LinArcxToast.qml">util/qml/components/toast/LinArcxToast.qml</file>

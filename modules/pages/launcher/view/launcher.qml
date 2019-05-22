@@ -1,8 +1,8 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
-import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.3
-import Launcher 1.0
+
+import LauncherClass 1.0
 import "qrc:/util/qml/"
 
 Window {
@@ -10,41 +10,66 @@ Window {
     title: qsTr("Afarinesh")
     visible: true
     property string path
-    property string fPath
+    property string listProjects: "qrc:/pages/ListProjects.qml"
+    property string initialPage: "qrc:/pages/InitialPage.qml"
     property var templatesArray
 
-    //    color: "#D7CCC8"//"#DCDCDC"
-    Launcher {
-        id: qLauncher
+    LauncherClass {
+        id: qLC
     }
 
-    ////// Popup
+    LinArcxToast {
+        id: messages
+    }
+
+    StackView {
+        id: qStackView
+        width: parent.width / 4 * 3
+        height: parent.height
+        anchors.left: qProjects.right
+    }
+
+    //---------------- Popup --------------//
     LinArcxDialog {
         id: mPopUp
-        mImage: "qrc:/images/sad.svg"
+        mImage: "qrc:/images/warning.svg"
         mTitle: "Are you Sure?"
-        mBody: "If You delete this template, it will be deleted from settings too. are you sure?"
+        mBody: Rectangle {
+            anchors.fill: parent
+            Button {
+                id: qYes
+                text: "Yes"
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                onClicked: {
+                    mPopUp.close()
+                    qLC.removeItem(qListView.currentItem.data[2].text)
+                    qModel.remove(qListView.currentIndex)
+                    qStackView.push(initialPage)
+                    qRemove.opacity = 0.3
+                    qRemove.enabled = false
+                }
+            }
+
+            Button {
+                text: "No"
+                anchors.top: qYes.top
+                anchors.right: qYes.left
+                anchors.rightMargin: 10
+                onClicked: mPopUp.close()
+            }
+        }
     }
 
+    //------------------- List of templates ----------------------//
     Rectangle {
         id: qProjects
         width: parent.width / 4
-        height: parent.height - 40
+        height: parent.height - qButtonsArea.height
         color: "#424242" //"#767676"
         z: 1
-
-        MouseArea {
-            id: qMouseAreaParent
-            width: parent.width
-            anchors.bottom: parent.bottom
-            onClicked: {
-                qPageLoader.source = ""
-                qImage.visible = true
-                qButton.visible = true
-                qRemove.enabled = false
-                qRemove.opacity = 0.3
-            }
-        }
 
         ListModel {
             id: qModel
@@ -66,22 +91,21 @@ Window {
                 color: "transparent"
 
                 onHeightChanged: {
-                    qMouseAreaParent.height = qProjects.height - qRectContent.height
+                    height = qIcon.height + qAuthorLabel.height + 5
+                    qEmptyArea.height = qProjects.height - qRectContent.height - height
+                    qProjectsArea.height += height
                 }
 
                 Component.onCompleted: {
-                    height = qNameLabel.height + qAuthorLabel.height + qCommentLabel.height
-                            + qComment.height + qPath.height + qPathLabel.height + 30
+                    height = qIcon.height + qAuthorLabel.height + 5
                     qListView.height += height
                 }
 
                 MouseArea {
-                    id: qMouseInner
+                    id: qProjectsArea
                     anchors.fill: parent
                     onClicked: {
-                        qPageLoader.setSource("qrc:/pages/Generator.qml", {
-                                                  "models": templatesArray
-                                              })
+                        qStackView.push(listProjects, {"name": name})
                         qListView.currentIndex = index
                         qRemove.opacity = 1
                         qRemove.enabled = true
@@ -127,58 +151,13 @@ Window {
                 }
 
                 Image {
+                    id: qIcon
                     source: icon
                     anchors.right: parent.right
                     anchors.rightMargin: 10
                     anchors.bottom: qAuthor.bottom
-                    sourceSize.width: 40
-                    sourceSize.height: 40
-                }
-
-                Text {
-                    id: qCommentLabel
-                    text: qsTr("Comment: ")
-                    color: "#BA68C8"
-                    anchors.left: parent.left
-                    anchors.top: qAuthorLabel.bottom
-                    anchors.topMargin: 5
-                    font.bold: true
-                }
-
-                Text {
-                    id: qComment
-                    color: "#E0E0E0"
-                    text: "\"" + comment + "\""
-                    width: qProjects.width
-                    anchors.left: parent.left
-                    font.pixelSize: 12
-                    anchors.leftMargin: 5
-                    anchors.top: qCommentLabel.bottom
-                    wrapMode: TextArea.Wrap
-                    font.italic: true
-                }
-
-                Text {
-                    id: qPathLabel
-                    text: qsTr("Path: ")
-                    color: "#BA68C8"
-                    anchors.left: parent.left
-                    anchors.top: qComment.bottom
-                    anchors.topMargin: 5
-                    font.bold: true
-                }
-
-                Text {
-                    id: qPath
-                    text: "\"" + path + "\""
-                    color: "#E0E0E0"
-                    width: qProjects.width
-                    font.pixelSize: 13
-                    wrapMode: TextArea.Wrap
-                    anchors.left: parent.left
-                    anchors.leftMargin: 5
-                    anchors.top: qPathLabel.bottom
-                    font.italic: true
+                    sourceSize.width: qName.height + qAuthor.height
+                    sourceSize.height: qName.height + qAuthor.height
                 }
 
                 Rectangle {
@@ -186,13 +165,28 @@ Window {
                     height: 1
                     color: "#212121"
                     anchors.left: parent.left
-                    anchors.top: qPath.bottom
+                    anchors.top: qIcon.bottom
+                    anchors.topMargin: 1
                 }
+            }
+        }
+
+        MouseArea {
+            id: qEmptyArea
+            width: parent.width
+            height: qProjects.height
+            anchors.bottom: parent.bottom
+            onClicked: {
+                qRemove.opacity = 0.3
+                qRemove.enabled = false
+                qStackView.push(initialPage)
             }
         }
     }
 
+    //------------------- Add/Remove Templates ----------------------//
     Rectangle {
+        id: qButtonsArea
         width: qProjects.width
         height: 40
         anchors.top: qProjects.bottom
@@ -206,11 +200,50 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
+
+            LinArcxToolTip {
+                id: qAddTooTip
+                mother: qAdd
+                direction: 2
+                title: "Add Template"
+            }
+
+            states: [
+                State {
+                    name: "scale"
+                    PropertyChanges {
+                        target: qAdd
+                        scale: 0.9
+                    }
+                },
+                State {
+                    name: "normal"
+                    PropertyChanges {
+                        target: qAdd
+                        scale: 1
+                    }
+                }
+            ]
+
+            transitions: Transition {
+                ScaleAnimator {
+                    duration: 100
+                }
+            }
+
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
                     qFileDialog.open()
+                }
+                onEntered: {
+                    qAdd.state = "scale"
+                    qAddTooTip.visible = true
+                }
+                onExited: {
+                    qAdd.state = "normal"
+                    qAddTooTip.visible = false
                 }
             }
         }
@@ -229,7 +262,7 @@ Window {
             LinArcxToolTip {
                 id: qRemoveTooTip
                 mother: qRemove
-                direction: 3
+                direction: 2
                 title: "Remove Template"
             }
 
@@ -261,14 +294,6 @@ Window {
                 hoverEnabled: true
                 onClicked: {
                     mPopUp.open()
-                    //                    qModel.remove(qListView.currentIndex)
-                    //                    qLauncher.removeItem(qListView.currentItem)
-                    //                    qPageLoader.source = ""
-                    //                    if (qModel.count == 0) {
-                    //                        qImage.visible = true
-                    //                        qButton.visible = true
-                    //                        qRemove.visible = false
-                    //                    }
                 }
                 onEntered: {
                     qRemove.state = "scale"
@@ -282,84 +307,22 @@ Window {
         }
     }
 
-    LinArcxToast {
-        id: messages
-    }
-
-    Image {
-        id: qImage
-        source: "qrc:/images/sad.svg"
-        anchors.centerIn: qPageLoader
-        sourceSize.width: 80
-        sourceSize.height: 80
-        visible: false
-    }
-
-    Button {
-        id: qButton
-        text: "Open A Template :)"
-        onClicked: qFileDialog.open()
-        anchors.top: qImage.bottom
-        anchors.topMargin: 10
-        anchors.horizontalCenter: qPageLoader.horizontalCenter
-        visible: false
-    }
-
-    FileDialog {
-        id: qFileDialog
-        title: "Choose Template Directory"
-        folder: shortcuts.home
-        selectFolder: true
-        onAccepted: {
-            path = qFileDialog.folder
-            qLauncher.hasConfig(qFileDialog.folder)
-        }
-    }
-
-    Loader {
-        id: qPageLoader
-        width: parent.width / 4 * 3
-        height: parent.height
-        anchors.left: qProjects.right
-
-        onStatusChanged: {
-            if (status) {
-                console.log("Ready")
-                animation.running = true
-            } else {
-                console.log("Not Ready!")
-                animation.running = false
-            }
-        }
-
-        NumberAnimation {
-            id: animation
-            target: qPageLoader.item
-            property: "x"
-            from: -(window.minimumWidth)
-            to: 0
-            duration: 1000
-            easing.type: Easing.OutCirc
-        }
-    }
-
     Connections {
-        target: qLauncher
+        target: qLC
         onAllKeysReady: {
             if (keys.length === 0) {
-                qImage.visible = true
-                qButton.visible = true
+                qStackView.push(initialPage)
             } else {
                 for (var i in keys) {
                     path = keys[i]
-                    qLauncher.hasConfig(keys[i])
+                    qLC.hasConfig(keys[i])
                 }
             }
         }
 
         onConfigFound: {
             if (hasConfig) {
-                qLauncher.listTemplates(path)
+                qLC.listTemplates(path)
             } else {
                 messages.displayMessage("There is no afarinesh.conf!")
             }
@@ -370,7 +333,7 @@ Window {
                 messages.displayMessage("There is no template for generate.")
             } else {
                 templatesArray = templates
-                qLauncher.templateInfo(path)
+                qLC.templateInfo(path)
             }
         }
 
@@ -381,14 +344,12 @@ Window {
                 qModel.append({
                                   "name": templateInfo[0],
                                   "author": templateInfo[1],
-                                  "icon": path + templateInfo[2],
+                                  "icon": path + "/" + templateInfo[2],
                                   "comment": templateInfo[3],
                                   "path": templateInfo[4]
                               })
-                qLauncher.savePath(templateInfo[0], path)
-                qPageLoader.setSource("qrc:/pages/Generator.qml", {
-                                          "models": templatesArray
-                                      })
+                qLC.savePath(templateInfo[0], path)
+                qStackView.push(listProjects, {"name": templateInfo[0]})
                 qRemove.opacity = 1
                 qRemove.enabled = true
             }
@@ -402,6 +363,6 @@ Window {
         window.maximumHeight = Screen.height
         window.x = Screen.width / 2 - window.minimumWidth / 2
         window.y = Screen.height / 2 - window.minimumHeight / 2
-        qLauncher.getAllKeys()
+        qLC.getAllKeys()
     }
 }
