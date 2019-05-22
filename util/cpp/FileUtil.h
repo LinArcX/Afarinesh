@@ -28,6 +28,7 @@ public:
     static std::string capitilizeFirstChar(std::string word);
     static bool fileExists(QString path);
     static bool dirExists(QString path);
+    static bool copyRecursively(const QString& srcFilePath, const QString& tgtFilePath);
 
 private:
     FileUtil();

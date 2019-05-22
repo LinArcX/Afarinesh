@@ -3,7 +3,7 @@ import QtQuick.Window 2.11
 import QtQuick.Controls 2.3
 
 import LauncherClass 1.0
-import "qrc:/util/qml/"
+import "qrc:/components/qml/"
 
 Window {
     id: window
@@ -18,7 +18,7 @@ Window {
         id: qLC
     }
 
-    LinArcxToast {
+    LinarcxToast {
         id: messages
     }
 
@@ -30,7 +30,7 @@ Window {
     }
 
     //---------------- Popup --------------//
-    LinArcxDialog {
+    LinarcxPopUp {
         id: mPopUp
         mImage: "qrc:/images/warning.svg"
         mTitle: "Are you Sure?"
@@ -201,7 +201,7 @@ Window {
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
 
-            LinArcxToolTip {
+            LinarcxToolTip {
                 id: qAddTooTip
                 mother: qAdd
                 direction: 2
@@ -259,7 +259,7 @@ Window {
             enabled: false
             opacity: 0.3
 
-            LinArcxToolTip {
+            LinarcxToolTip {
                 id: qRemoveTooTip
                 mother: qRemove
                 direction: 2

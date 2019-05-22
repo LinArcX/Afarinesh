@@ -6,17 +6,33 @@
         <file alias="ListProjects.qml">modules/pages/listProjects/ListPorjects.qml</file>
         <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
     </qresource>
-    <qresource prefix="/util">
-        <file alias="qml/LinArcxToast.qml">util/qml/components/toast/LinArcxToast.qml</file>
-        <file alias="qml/LinArcxToastComponent.qml">util/qml/components/toast/LinArcxToastComponent.qml</file>
-        <file alias="qml/LinArcxToolTip.qml">util/qml/components/LinArcxToolTip.qml</file>
-        <file alias="qml/LinArcxDialog.qml">util/qml/components/LinArcxDialog.qml</file>
-        <file alias="qml/LinArcxTextField.qml">util/qml/components/LinArcxTextField.qml</file>
+    <qresource prefix="/components">
+        <file alias="qml/LinarcxHLine.qml">util/qml/LinarcxHLine.qml</file>
+        <file alias="qml/LinarcxCardView.qml">util/qml/LinarcxCardView.qml</file>
+        <file alias="qml/LinarcxDialog.qml">util/qml/LinarcxDialog.qml</file>
+        <file alias="qml/LinarcxPopUp.qml">util/qml/LinarcxPopUp.qml</file>
+        <file alias="qml/LinarcxTextField.qml">util/qml/LinarcxTextField.qml</file>
+        <file alias="qml/LinarcxToast.qml">util/qml/LinarcxToast.qml</file>
+        <file alias="qml/LinarcxToastComponent.qml">util/qml/LinarcxToastComponent.qml</file>
+        <file alias="qml/LinarcxToolTip.qml">util/qml/LinarcxToolTip.qml</file>
+        <file alias="qml/LinarcxButton.qml">util/qml/LinarcxButton.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="warning.svg">util/images/warning.svg</file>
         <file alias="sad.svg">util/images/sad.svg</file>
         <file alias="add-folder.svg">util/images/add-folder.svg</file>
         <file alias="remove-folder.svg">util/images/remove-folder.svg</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file alias="fontAwesome/Awesome.qml">util/fonts/fontawesome/Awesome.qml</file>
+        <file alias="fontAwesome/fontawesome-webfont.ttf">util/fonts/fontawesome/fontawesome-webfont.ttf</file>
+        <file alias="fontAwesome/qmldir">util/fonts/fontawesome/qmldir</file>
+        <file alias="hack/qmldir">util/fonts/Hack/qmldir</file>
+        <file alias="hack/Hack.qml">util/fonts/Hack/Hack.qml</file>
+        <file alias="hack/Hack Regular Nerd Font Complete.ttf">util/fonts/Hack/Hack Regular Nerd Font Complete.ttf</file>
+        <file alias="hack/Hack Regular Nerd Font Complete Mono.ttf">util/fonts/Hack/Hack Regular Nerd Font Complete Mono.ttf</file>
+    </qresource>
+    <qresource prefix="/js">
+        <file alias="Constants.js">util/js/Constants.js</file>
     </qresource>
 </RCC>
