@@ -2,6 +2,7 @@
 #define ADDPROJECT_H
 
 #include <QObject>
+#include <QProcess>
 #include <QVariant>
 
 #include "util/cpp/RegexUtil.h"
@@ -13,9 +14,20 @@ private:
 public:
     explicit AddProject(QObject* parent = nullptr);
 
-    Q_INVOKABLE void generateProject(QVariant name, QVariant path);
+    QProcess* pListAppVars;
+    //    void returnAppVars();
+
+    Q_INVOKABLE void generateProject(QVariant templateName, QVariant projectName, QVariant projectPath, QVariantMap vars);
+    Q_INVOKABLE void getVariables(QVariant templateName);
 
 signals:
+    void varsReady(QStringList vars);
+
+private:
+    QMap<QString, QStringList>* patternBothInFileNames;
+    QMap<QString, QStringList>* patternBothInsideFiles;
+    QMap<QString, QStringList>* patternInFileNames;
+    QMap<QString, QStringList>* patternInsideFiles;
 };
 
 #endif // ADDPROJECT_H

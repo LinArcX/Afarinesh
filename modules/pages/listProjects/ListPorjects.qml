@@ -9,23 +9,20 @@ import "qrc:/fonts/hack/"
 import "qrc:/js/Constants.js" as CONS
 
 Rectangle {
-    id: appPane
-    width: parent.width
-    height: parent.height
     property string addProject: "qrc:/pages/AddProject.qml"
-    property var name
+    property var templateName
 
     LinarcxButton {
         id: btnNewProject
-        btnTxt: "Create New " + name + " Project"
+        btnTxt: "Create New " + templateName + " Project"
         onClicked: qStackView.push(addProject, {
-                                       "name": name
+                                       "templateName": templateName
                                    })
         anchors.bottom: parent.bottom
-        width: parent.width / 6 * 5
+        width: parent.width / 8 * 7
         height: 40
         anchors.left: parent.left
-        qColor: CONS.green
+        qColor: CONS.green500
         iconFamily: Hack.family
         iconName: Hack.nf_dev_sizzlejs
         iconSize: 30
@@ -36,11 +33,11 @@ Rectangle {
         btnTxt: "Home"
         onClicked: qStackView.pop()
         anchors.bottom: parent.bottom
-        width: parent.width / 6 * 1
+        width: parent.width / 8 * 1
         height: 40
         anchors.left: btnNewProject.right
         anchors.right: parent.right
-        qColor: CONS.blue
+        qColor: CONS.indigo500
         iconFamily: Hack.family
         iconName: Hack.nf_oct_home
         iconSize: 30

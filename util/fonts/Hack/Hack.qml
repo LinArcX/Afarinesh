@@ -10,4 +10,11 @@ QtObject {
     readonly property string nf_fa_rocket: "\uf135"
     readonly property string nf_mdi_home_outline: "\ufb9f"
     readonly property string nf_oct_home: "\uf46d"
+    readonly property string nf_mdi_select: "\uf984"
+    readonly property string nf_mdi_arrow_left_box: "\ufbbf"
+    readonly property string nf_mdi_settings_box: "\uf993"
+    readonly property string nf_mdi_delete_forever: "\ufae7"
+    readonly property string nf_custom_folder_open: "\ue5fe"
+    readonly property string nf_mdi_folder_remove: "\uf757"
+    readonly property string nf_mdi_delete_empty: "\ufbca"
 }

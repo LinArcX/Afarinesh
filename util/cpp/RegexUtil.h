@@ -20,6 +20,7 @@ public:
     };
 
     static char* findReplaseRegx(const char* pattern, const char* rawAlternative, char* target, Replacement replacement);
+    static QStringList findAllAcuurances(QString text, QString rxString);
 };
 
 #endif // REGEXUTIL_H

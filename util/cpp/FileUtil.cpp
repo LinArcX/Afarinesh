@@ -1,5 +1,11 @@
 #include "FileUtil.h"
+
+#include <QDebug>
+#include <dirent.h>
 #include <iostream>
+//#include <filesystem>
+
+using namespace std;
 
 FileUtil::FileUtil()
 {
@@ -180,6 +186,64 @@ bool FileUtil::makeDirectory(QString dir)
     return QDir().mkdir(dir);
 }
 
+template <typename T>
+vector<T> test(T begin, T end)
+{
+    size_t size = 0;
+
+    for (auto it = begin; (it != end); it++) {
+        size += it->size();
+    }
+
+    vector<T> ret = vector<T>(size);
+    return ret;
+}
+
+void FileUtil::listFilesRecursively(const std::string& path, std::function<void(const std::string&)> cb)
+{
+    // Usage:
+    //    FileUtil::listFiles(qTemplatePath.toStdString() + "/", [](const std::string& path) {
+    //        std::cout << path << std::endl;
+    //    });
+
+    if (auto dir = opendir(path.c_str())) {
+        while (auto f = readdir(dir)) {
+            if (!f->d_name || f->d_name[0] == '.')
+                continue;
+            if (f->d_type == DT_DIR)
+                listFilesRecursively(path + f->d_name + "/", cb);
+
+            if (f->d_type == DT_REG)
+                cb(path + f->d_name);
+        }
+        closedir(dir);
+    }
+}
+
+QStringList FileUtil::getAllFilesInDir(QString dirPath, QDir::Filters filters, QStringList exceptions)
+{
+    QStringList files;
+
+    QDirIterator it(dirPath, filters, QDirIterator::Subdirectories);
+    if (exceptions.isEmpty()) {
+        while (it.hasNext()) {
+            auto currentItem = it.next();
+            files.push_back(currentItem);
+        }
+    } else {
+        while (it.hasNext()) {
+            auto currentItem = it.next();
+            files.push_back(currentItem);
+            for (int i = 0; i < exceptions.length(); i++) {
+                if (currentItem.endsWith(exceptions[i])) {
+                    files.pop_back();
+                }
+            }
+        }
+    }
+    return files;
+}
+
 bool FileUtil::fileExists(QString path)
 {
     QFileInfo check_file(path);
@@ -226,3 +290,64 @@ bool FileUtil::copyRecursively(const QString& srcFilePath, const QString& tgtFil
     }
     return true;
 }
+
+//    for (auto itEntry = fs::recursive_directory_iterator(dirPath.toStdString());
+//         itEntry != fs::recursive_directory_iterator();
+//         ++itEntry) {
+//        const auto filenameStr = iterEntry->path().filename().string();
+//        std::cout << std::setw(iterEntry.depth() * 3) << "";
+//        std::cout << "dir:  " << filenameStr << '\n';
+//    }
+
+//    QDir currentDir(dirPath);
+//    currentDir.setFilter(QDir::Dirs);
+//    QStringList entries = currentDir.entryList();
+//    for (QString ent : entries) {
+//        qDebug() << ent;
+//    }
+
+//    using std::experimental::filesystem::recursive_directory_iterator;
+//    for (auto& dirEntry : fs::recursive_directory_iterator(dirPath.toStdString()))
+//        cout << dirEntry << endl;
+
+//        if(it.next().endsWith(".ttf")||it.next().endsWith("otf"))
+//        qDebug() << it.next();
+//        QFile f(it.next());
+//        f.open(QIODevice::ReadOnly);
+//        qDebug() << f.fileName() << f.readAll().trimmed().toDouble() / 1000 << "MHz";
+
+//    // Create a vector of string
+//    std::vector<std::string> listOfFiles;
+//    try {
+//        // Check if given path exists and points to a directory
+//        if (filesys::exists(dirPath) && filesys::is_directory(dirPath)) {
+//            // Create a Recursive Directory Iterator object and points to the starting of directory
+//            filesys::recursive_directory_iterator iter(dirPath);
+
+//            // Create a Recursive Directory Iterator object pointing to end.
+//            filesys::recursive_directory_iterator end;
+
+//            // Iterate till end
+//            while (iter != end) {
+//                // Check if current entry is a directory and if exists in skip list
+//                if (filesys::is_directory(iter->path()) && (std::find(dirSkipList.begin(), dirSkipList.end(), iter->path().filename()) != dirSkipList.end())) {
+//                    // Skip the iteration of current directory pointed by iterator
+//                    // c++17 Filesystem API to skip current directory iteration
+//                    iter.disable_recursion_pending();
+//                } else {
+//                    // Add the name in vector
+//                    listOfFiles.push_back(iter->path().string());
+//                }
+
+//                error_code ec;
+//                // Increment the iterator to point to next entry in recursive iteration
+//                iter.increment(ec);
+//                if (ec) {
+//                    std::cerr << "Error While Accessing : " << iter->path().string() << " :: " << ec.message() << '\n';
+//                }
+//            }
+//        }
+//    } catch (std::system_error& e) {
+//        std::cerr << "Exception :: " << e.what();
+//    }
+//    return listOfFiles;

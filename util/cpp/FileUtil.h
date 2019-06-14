@@ -21,6 +21,9 @@ public:
 
     static bool checkExistDirectory(QString);
     static bool makeDirectory(QString);
+    static void listFilesRecursively(const std::string& path, std::function<void(const std::string&)> cb);
+
+    static QStringList getAllFilesInDir(QString, QDir::Filters filters, QStringList exceptions = {});
 
     static QString determineWordType(QString word);
     static std::string upperCaseAllChars(std::string word);

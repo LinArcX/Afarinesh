@@ -63,8 +63,6 @@ T.Button {
                 font.pixelSize: iconSize ? iconSize : 18
                 color: qTextColor ? qTextColor : "white"
             }
-
-
         }
     }
 

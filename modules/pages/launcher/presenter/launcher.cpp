@@ -33,7 +33,7 @@ void Launcher::removeItem(QVariant key)
 void Launcher::hasConfig(QVariant rawPath)
 {
     QString dir = rawPath.toString().split("//")[1];
-    const std::string configFile = dir.toStdString() + "/afarinesh.yaml";
+    const std::string configFile = dir.toStdString() + "/trinity.yaml";
     bool isConfiFileExists = FileUtil::fileExists(QString::fromStdString(configFile));
     if (isConfiFileExists) {
         emit configFound(true);
@@ -58,7 +58,7 @@ void Launcher::templateInfo(QVariant rawPath)
 {
     QStringList info;
     QString dir = rawPath.toString().split("//")[1];
-    const std::string configFile = dir.toStdString() + "/afarinesh.yaml";
+    const std::string configFile = dir.toStdString() + "/trinity.yaml";
     //    bool isConfiFileExists = FileUtil::fileExists(QString::fromStdString(configFile));
     QString name = QString::fromStdString(YamlUtil::getValue(configFile, "name"));
     QString author = QString::fromStdString(YamlUtil::getValue(configFile, "author"));

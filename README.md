@@ -1,2 +1,2 @@
-# Afarinesh
+# Trinity
 Multi Purpose Code Jenerator.

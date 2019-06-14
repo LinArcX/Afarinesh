@@ -16,6 +16,10 @@
         <file alias="qml/LinarcxToastComponent.qml">util/qml/LinarcxToastComponent.qml</file>
         <file alias="qml/LinarcxToolTip.qml">util/qml/LinarcxToolTip.qml</file>
         <file alias="qml/LinarcxButton.qml">util/qml/LinarcxButton.qml</file>
+        <file alias="qml/LinarcxLabel.qml">util/qml/LinarcxLabel.qml</file>
+        <file alias="qml/LinarcxTableView.qml">util/qml/LinarcxTableView.qml</file>
+        <file alias="qml/LinArcxDialog.qml">util/qml/LinArcxDialog.qml</file>
+        <file alias="qml/LinarcxImageToolTiper.qml">util/qml/LinarcxImageToolTiper.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="warning.svg">util/images/warning.svg</file>
@@ -30,7 +34,6 @@
         <file alias="hack/qmldir">util/fonts/Hack/qmldir</file>
         <file alias="hack/Hack.qml">util/fonts/Hack/Hack.qml</file>
         <file alias="hack/Hack Regular Nerd Font Complete.ttf">util/fonts/Hack/Hack Regular Nerd Font Complete.ttf</file>
-        <file alias="hack/Hack Regular Nerd Font Complete Mono.ttf">util/fonts/Hack/Hack Regular Nerd Font Complete Mono.ttf</file>
     </qresource>
     <qresource prefix="/js">
         <file alias="Constants.js">util/js/Constants.js</file>

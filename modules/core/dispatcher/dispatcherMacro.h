@@ -5,5 +5,5 @@
 #define MAIN_QML "qrc:/pages/launcher.qml"
 
 #define ORGANIZATION "io.github.linarcx"
-#define APPLICATION "afarinesh"
+#define APPLICATION "trinity"
 #define TEMPLATES_GROUP "Templates"
