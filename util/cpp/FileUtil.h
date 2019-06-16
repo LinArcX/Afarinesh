@@ -29,6 +29,9 @@ public:
     static std::string upperCaseAllChars(std::string word);
     static std::string lowerCaseAllChars(std::string word);
     static std::string capitilizeFirstChar(std::string word);
+    static void replaceString(QString path, QString sourceText, QString targetText);
+    static void replaceString(QString path, QRegExp sourceText, QString targetText);
+    static void renameFile(QString oldName, QString newName);
     static bool fileExists(QString path);
     static bool dirExists(QString path);
     static bool copyRecursively(const QString& srcFilePath, const QString& tgtFilePath);

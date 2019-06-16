@@ -11,14 +11,14 @@ Rectangle {
     id: appPane
     color: "white"
     property var targetPath
-    property var templateName
-    property int counter: 1
-    property bool isTableValid: false
     property int tableItems
+    property int counter: 1
+    property var templateName
+    property bool isTableValid: false
     property int filledTableItems: 0
-    property var myItems: ({
 
-                           })
+    property var myItems: ({})
+    property var tableIDs: ({})
 
     AddProjectClass {
         id: qAPC
@@ -35,7 +35,6 @@ Rectangle {
             targetPath = currentFolder()
             lblTargetPath.mText = targetPath
             lblTargetPath.visible = true
-            console.log("You choose: " + targetPath)
             qTargetPathDialog.close()
         }
     }
@@ -48,8 +47,11 @@ Rectangle {
         target: qAPC
         onVarsReady: {
             tableItems = vars.length
+            var j = 0
             for (var i in vars) {
-                addRow("r" + counter++, vars[i], appPane.width)
+                tableIDs[j] = false;
+                j++
+                addRow(qTableVariables, "r" + counter++, vars[i], appPane.width, j-1)
             }
         }
     }
@@ -69,7 +71,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
         onTextChanged: {
-            if (txtProjectName.text != "" && lblTargetPath.visible
+            if (txtProjectName.text.length > 0 && lblTargetPath.visible
                     && tableItems == filledTableItems) {
                 btnGenerate.enabled = true
             } else {
@@ -206,168 +208,53 @@ Rectangle {
         iconSize: 30
     }
 
-    TextEdit {
-        onTextChanged: {
-            text
+    Component {
+        id: tableItemComponent
+        Row {
+            id: qRow
+            spacing: 5
         }
     }
 
-    function addRow(id, text, width) {
+    function addRow(parent, id, mText, width, rowNumber) {
+
         var rowOne = Qt.createQmlObject(
-                    "import QtQuick 2.11; Row { id: \"" + id + "\"; spacing: 5; width: "
-                    + appPane.width / 3 + "; onWidthChanged: width = " + appPane.width / 3 + " }",
+                    "import QtQuick 2.11;"+
+                        "Row {"+
+                            "id: \"" + id + "\";"+
+                            "spacing: 5;"+
+                            "width: " + appPane.width / 3 + ";"+
+                            "onWidthChanged: width = " + appPane.width / 3 +
+                        "}",
                     qTableVariables)
 
         var itemOne = Qt.createQmlObject(
-                    "import QtQuick 2.11; import QtQuick.Controls 2.5; Column { TextField { placeholderText: \""
-                    + text + "\"; width: " + appPane.width / 3
-                    + ";  onWidthChanged: width = " + appPane.width / 3
-                    + "; onTextChanged: { if (text != \"\") { myItems." + text
-                    + " = text; filledTableItems++; if (txtProjectName.text != \"\" && lblTargetPath.visible && tableItems == filledTableItems) { btnGenerate.enabled = true }  } else { filledTableItems--; btnGenerate.enabled = false  } } } }",
+                    "import QtQuick 2.11;" +
+                    "import QtQuick.Controls 2.5;"+
+                    "Column {"+
+                        "TextField {"+
+                            "placeholderText: \"" + mText + "\";" +
+                            "width: " + appPane.width / 3 + ";" +
+                            "onWidthChanged: width = " + appPane.width / 3 + ";" +
+                            "onTextChanged: {"+
+                                "if (text.length > 0) {"+
+                                    "if (tableIDs[" + rowNumber + "] === false) { " +
+                                        "tableIDs[" + rowNumber + "] = true;"+
+                                        "filledTableItems++;" +
+                                    "};"+
+                                    "myItems." + mText + " = text;" +
+
+                                    "if (txtProjectName.text.length > 0 && lblTargetPath.visible && tableItems == filledTableItems) { " +
+                                        "btnGenerate.enabled = true "+
+                                    "}" +
+                                "} else {"+
+                                    "tableIDs[" + rowNumber + "]" + "= false;"+
+                                    "filledTableItems--;"+
+                                    "btnGenerate.enabled = false;"+
+                                "}"+
+                            "}"+
+                        "}"+
+                    "}",
                     rowOne)
     }
 }
-//            console.log(myItems)
-//            console.log(templateName)
-//            console.log(txtProjectName.text)
-//            console.log(lblTargetPath.mText)
-
-//    Dialog {//        id: dialog//        title: "Edit"//        standardButtons: Dialog.Ok | Dialog.Cancel//        modal: true//        focus: true
-//        width: parent.width / 2
-//        height: parent.height / 5 * 4
-
-//        x: (parent.width - width) / 2
-//        y: parent.height / 15
-
-//        contentItem: Rectangle {
-//            id: dlgContent
-//            anchors.fill: parent
-
-//            TextField {
-//                id: qOne
-//                placeholderText: qsTr("Type: ")
-//                anchors.top: parent.top
-//                anchors.topMargin: 10
-//                width: parent.width / 6 * 5
-//                anchors.horizontalCenter: parent.horizontalCenter
-//            }
-
-//            TextField {
-//                id: qTwo
-//                placeholderText: qsTr("Year: ")
-//                anchors.top: qOne.bottom
-//                width: parent.width / 6 * 5
-//                anchors.horizontalCenter: parent.horizontalCenter
-//            }
-
-//            TextField {
-//                id: qThree
-//                placeholderText: qsTr("Month: ")
-//                anchors.top: qTwo.bottom
-//                width: parent.width / 6 * 5
-//                anchors.horizontalCenter: parent.horizontalCenter
-//            }
-
-//            LinarcxButton {
-//                id: qCommit
-//                anchors.top: qThree.bottom
-//                width: parent.width / 6 * 5
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                btnTxt: "به روزرسانی"
-//                qColor: CONS.green
-//                iconFamily: Awesome.family
-//                iconName: Awesome.fa_save
-
-//                onClicked: {
-//                    qTableVariables.mModel.set(qIndex, {
-//                                                   "one": qOne.text,
-//                                                   "two": qTwo.text,
-//                                                   "three": qThree.text
-//                                               })
-//                    dialog.close()
-//                }
-//            }
-
-//            LinarcxButton {
-//                anchors.top: qCommit.bottom
-//                anchors.topMargin: 10
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                width: parent.width / 6 * 5
-//                onClicked: dialog.close()
-//                btnTxt: "انصراف"
-
-//                qColor: CONS.pink
-//                iconFamily: Awesome.family
-//                iconName: Awesome.fa_hand_paper_o
-//            }
-//        }
-
-//        footer: Rectangle {
-//            height: 0
-//        }
-
-//        header: Rectangle {
-//            height: 0
-//        }
-//    }
-
-//            var keys = ["name", "ip", "port"]
-//            var values = [txtBuildingName.text, txtIPAddress.text, txtPort.text]
-//            dbUtil.insert("buildings", keys, values)
-
-//            if (keys.length === 0) {
-//                qStackView.push(initialPage)
-//            } else {
-//                for (var i in keys) {
-//                    path = keys[i]
-//                    qLC.hasConfig(keys[i])
-//                }
-//            }
-
-//                qTableVariables.mModel.append({
-//                                                  "one": appVars[i],
-//                                                  "two": ""
-//                                              })
-
-//    LinarcxTableView {
-//        id: qTableVariables
-////        width: parent.width
-//        anchors.top: lblTargetPath.bottom
-//        anchors.left: parent.left
-////        anchors.leftMargin: 50
-//        anchors.topMargin: 10
-//        anchors.horizontalCenter: appPane.horizontalCenter
-//        hasDeleteColumns: false
-//        hasEditColumns: false
-//        dataColumns: 2
-//        headerOne: "Var"
-//        headerTwo: "Value"
-//        mWidth: parent.width / 3
-
-////        Component.onCompleted: {
-////            console.log(qTableVariables.width)
-////            anchors.leftMargin = appPane.width / 2 - qTableVariables.width / 2
-////        }
-
-////        Connections {
-////            target: qTableVariables
-////            onEditCalled: {
-////                qIndex = index
-////                qOne.text = obj.one
-////                qTwo.text = obj.two
-////                qThree.text = obj.three
-////                dialog.open()
-////            }
-////        }
-//    }
-
-// mFolder: shortcuts.pictures
-// QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)
-//        onFileSelected: {
-//            targetPath = currentFolder()
-//            lblTargetPath.text = targetPath
-//            lblTargetPath.visible = true
-//            console.log("You choose: " + targetPath)
-//            qTargetPathDialog.close()
-//        }
-

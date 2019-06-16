@@ -76,6 +76,52 @@ std::string FileUtil::capitilizeFirstChar(std::string word)
     //    return word;
 }
 
+void FileUtil::replaceString(QString path, QString sourceText, QString targetText)
+{
+    QByteArray fileData;
+    QFile file(path);
+    file.open(QIODevice::ReadOnly); // open for read and write
+    fileData = file.readAll(); // read all the data into the byte array
+    QString text(fileData); // add to text string for easy string replace
+
+    text.replace(QString(sourceText), QString(targetText)); // replace text in string
+
+    file.close();
+
+    if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&file);
+        out << text;
+    }
+    file.close();
+}
+
+void FileUtil::replaceString(QString path, QRegExp sourceText, QString targetText)
+{
+    QByteArray fileData;
+    QFile file(path);
+    file.open(QIODevice::ReadOnly); // open for read and write
+    fileData = file.readAll(); // read all the data into the byte array
+    QString text(fileData); // add to text string for easy string replace
+
+    text.replace(sourceText, QString(targetText)); // replace text in string
+
+    file.close();
+
+    if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&file);
+        out << text;
+    }
+    file.close();
+}
+
+void FileUtil::renameFile(QString oldName, QString newName)
+{
+    QFile file(oldName);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    file.rename(newName);
+    file.close();
+}
+
 QString FileUtil::determineWordType(QString word)
 {
     char c;
@@ -129,13 +175,6 @@ QString FileUtil::determineWordType(QString word)
 
 bool FileUtil::writeFile(const QString& path, const QString& content, const QIODevice::OpenMode& mode)
 {
-    //    QString filename = "Data.txt";
-    //    QFile file(filename);
-    //    if (file.open(QIODevice::ReadWrite)) {
-    //        QTextStream stream(&file);
-    //        stream << "something" << endl;
-    //    }
-
     QFile file(path);
 
     if (file.open(mode)) {
@@ -290,6 +329,13 @@ bool FileUtil::copyRecursively(const QString& srcFilePath, const QString& tgtFil
     }
     return true;
 }
+
+//    QString filename = "Data.txt";
+//    QFile file(filename);
+//    if (file.open(QIODevice::ReadWrite)) {
+//        QTextStream stream(&file);
+//        stream << "something" << endl;
+//    }
 
 //    for (auto itEntry = fs::recursive_directory_iterator(dirPath.toStdString());
 //         itEntry != fs::recursive_directory_iterator();

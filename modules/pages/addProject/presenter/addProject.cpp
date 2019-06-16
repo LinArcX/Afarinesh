@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QDir>
 #include <QSettings>
 #include <QString>
@@ -12,7 +11,6 @@
 #include "util/cpp/FileUtil.h"
 #include "util/cpp/QtUtil.h"
 #include "util/cpp/RegexUtil.h"
-#include "util/cpp/YamlUtil.h"
 #include "util/cpp/utils.h"
 
 using namespace std;
@@ -45,11 +43,13 @@ void AddProject::getVariables(QVariant templateName)
             f.open(QIODevice::ReadOnly);
             QStringList list = RegexUtil::findAllAcuurances(QString::fromStdString(f.readAll().toStdString()), "(?<={\\[).+?(?=]})");
 
-            // Inside-file-names & Inside-files
             if (!list.isEmpty()) {
+                // Inside-file-names & Inside-files
+                patternBothInsideFiles->insert(file, list);
+
                 QStringList listInFileNames = RegexUtil::findAllAcuurances(file, "(?<={\\[).+?(?=]})");
                 patternBothInFileNames->insert(file, listInFileNames);
-                patternBothInsideFiles->insert(file, list);
+
                 vars.append(list);
             } else {
                 // Inside-file-names
@@ -131,220 +131,72 @@ void AddProject::generateProject(QVariant templateName, QVariant projectName, QV
             QFile f(file);
             f.open(QIODevice::ReadOnly);
             QStringList list = RegexUtil::findAllAcuurances(QString::fromStdString(f.readAll().toStdString()), "(?<={\\[).+?(?=]})");
+            f.close();
 
-            // Inside-file-names & Inside-files
             if (!list.isEmpty()) {
-                for (int i = 0; i < patternBothInsideFiles->values().count(); i++) {
-                    QString value;
-                    QString var = patternBothInsideFiles->value(file)[i];
-                    QString rxString = QString("(?<={\\[)%1(?=]})").arg(var);
-
-                    QVariantMap::iterator j;
-                    for (j = vars.begin(); j != vars.end(); ++j)
-                        if (&j.key() == var.toUpper()) {
-                            value = j.value().toString();
+                // Inside-file-names & Inside-files
+                for (int i = 0; i < patternBothInsideFiles->keys().count(); i++) {
+                    QStringList lVars = patternBothInsideFiles->values()[i];
+                    for (int j = 0; j < lVars.count(); j++) {
+                        QVariantMap::iterator h;
+                        for (h = vars.begin(); h != vars.end(); ++h) {
+                            if (&h.key() == lVars[j].toUpper()) {
+                                QString rxString = QString("{[%1]}").arg(lVars[j]);
+                                FileUtil::replaceString(file, rxString, h.value().toString());
+                            }
                         }
+                    }
+                }
 
-                    QRegExp rx(rxString);
-                    QFile f(file);
-                    f.open(QIODevice::ReadOnly);
-                    QString::fromStdString(f.readAll().toStdString()).replace(rx, value);
+                for (int i = 0; i < patternBothInFileNames->keys().count(); i++) {
+                    QStringList lVars = patternBothInFileNames->values()[i];
+                    for (int j = 0; j < lVars.count(); j++) {
+                        QVariantMap::iterator h;
+                        for (h = vars.begin(); h != vars.end(); ++h) {
+                            if (&h.key() == lVars[j].toUpper()) {
+                                QString rxString = QString("{[%1]}").arg(lVars[j]);
+                                QString oldPath = newProjectDirectory + patternBothInFileNames->keys()[i].split("templates/app/")[1];
+                                QString newPath = oldPath;
+                                newPath.replace("{[" + lVars[j] + "]}", h.value().toString());
+                                QFile::rename(oldPath, newPath);
+                            }
+                        }
+                    }
                 }
 
             } else {
+                // Inside-file-names
+                for (int i = 0; i < patternInFileNames->keys().count(); i++) {
+                    QStringList lVars = patternInFileNames->values()[i];
+                    for (int j = 0; j < lVars.count(); j++) {
+                        QVariantMap::iterator h;
+                        for (h = vars.begin(); h != vars.end(); ++h) {
+                            if (&h.key() == lVars[j].toUpper()) {
+                                QString rxString = QString("{[%1]}").arg(lVars[j]);
+                                QString oldPath = newProjectDirectory + patternInFileNames->keys()[i].split("templates/app/")[1];
+                                QString newPath = oldPath;
+                                newPath.replace("{[" + lVars[j] + "]}", h.value().toString());
+                                QFile::rename(oldPath, newPath);
+                            }
+                        }
+                    }
+                }
             }
 
         } else {
+            // Inside-files
+            for (int i = 0; i < patternInsideFiles->keys().count(); i++) {
+                QStringList lVars = patternInsideFiles->values()[i];
+                for (int j = 0; j < lVars.count(); j++) {
+                    QVariantMap::iterator h;
+                    for (h = vars.begin(); h != vars.end(); ++h) {
+                        if (&h.key() == lVars[j].toUpper()) {
+                            QString rxString = QString("{[%1]}").arg(lVars[j]);
+                            FileUtil::replaceString(file, rxString, h.value().toString());
+                        }
+                    }
+                }
+            }
         }
     }
 }
-
-//void AddProject::returnAppVars()
-//{
-//    QString outPut = QString(pListAppVars->readAllStandardOutput());
-//    //    qDebug() << outPut;
-//}
-
-//                QStringList listInFileNames = RegexUtil::findAllAcuurances(file, "(?<={\\[).+?(?=]})");
-//                patternBothInFileNames->insert(file, listInFileNames);
-//                patternBothInsideFiles->insert(file, list);
-
-//                // Inside-file-names
-//                QStringList listInFileNames = RegexUtil::findAllAcuurances(file, "(?<={\\[).+?(?=]})");
-//                patternInFileNames->insert(file, listInFileNames);
-
-//            // Inside-files
-//            QFile f(file);
-//            f.open(QIODevice::ReadOnly);
-//            QStringList list = RegexUtil::findAllAcuurances(QString::fromStdString(f.readAll().toStdString()), "(?<={\\[).+?(?=]})");
-
-//            if (!list.isEmpty()) {
-//                patternInsideFiles->insert(f.fileName(), list);
-//            }
-
-//    for (QString file : patternBothInsideFiles->keys()) {
-
-//        for (int i = 0; i < patternBothInFileNames->values().count(); i++) {
-//            QString value;
-//            QString var = patternBothInFileNames->value(file)[i];
-//            QString rxString = QString("(?<={\\[)%1(?=]})").arg(var);
-
-//            QVariantMap::iterator j;
-//            for (j = vars.begin(); j != vars.end(); ++j)
-//                if (&j.key() == var.toUpper()) {
-//                    value = j.value().toString();
-//                }
-
-//            QRegExp rx(rxString);
-//            QFile f(file);
-//            f.open(QIODevice::ReadOnly);
-//            QString::fromStdString(f.readAll().toStdString()).replace(rx, value);
-//        }
-
-//        //        files.removeAll(file);
-//    }
-
-//    for (QString file : patternInsideFiles->keys()) {
-//        files.removeAll(file);
-//    }
-
-//    for (QString file : patternInFileNames->keys()) {
-//        files.removeAll(file);
-//    }
-//                cout << &j.key() << ": " << &j.value() << endl;
-//            auto a = vars.find("d");
-
-//        for (QString key : fileAdresses->keys()) {
-//            if (key == file) {
-//                qDebug() << file;
-//                return;
-//            } else {
-//        break;
-//            }
-//        }
-
-//    qDebug() << "----------------";
-//    qDebug() << files.length();
-//    qDebug() << "----------------";
-
-//                if (item.contains("/")) {
-//                    QString innerDir = item.split("/")[0];
-//                    QDir qDir;
-//                    qDir.cd(qProjectPath + "/" + projectName.toString() + "/");
-//                    if (!qDir.exists(innerDir)) {
-//                        qDir.mkdir(innerDir);
-//                    }
-//                }
-
-//                QRegExp rx("");
-//                QStringList list;
-//                int pos = 0;
-
-//                while ((pos = rx.indexIn(item, pos)) != -1) {
-//                    list << rx.cap(1);
-//                    pos += rx.matchedLength();
-//                }
-//                QString str = "Offsets: 12 14 99 231 7";
-// list: ["12", "14", "99", "231", "7"]
-//                qDebug() << item;
-
-// Full address of files --> find . | ag "/.*(?<=\{\{).+?(?=\}\})[^/]*$" | awk -F/ '{print $NF}'
-// Full Address of vars --> ag "(?<=\{\{).+?(?=\}\})" --hidden
-// List all vars --> ag "(?<=\{\{).+?(?=\}\})" --hidden | awk -F: '{print $NF}' | grep -oP '(?<=\{\{).+?(?=\}\})'
-
-//QString srcFilePath("/home/linarcx/Documents/print.pdf");
-//                    qDir.mkdir(ttp);
-//    QFileInfo srcFileInfo(srcFilePath);
-//    if (srcFileInfo.isDir()) {
-//        QDir targetDir(tgtFilePath);
-//        targetDir.cdUp();
-//        if (!targetDir.mkdir(QFileInfo(tgtFilePath).fileName()))
-//            return false;
-//        QDir sourceDir(srcFilePath);
-//        QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-//        foreach (const QString& fileName, fileNames) {
-//            const QString newSrcFilePath
-//                = srcFilePath + QLatin1Char('/') + fileName;
-//            const QString newTgtFilePath
-//                = tgtFilePath + QLatin1Char('/') + fileName;
-//            if (!copyRecursively(newSrcFilePath, newTgtFilePath))
-//                return false;
-//        }
-//    } else {
-//        if (!QFile::copy(srcFilePath, tgtFilePath))
-//            return false;
-//    }
-
-//    QFile::copy("/home/linarcx/Documents/print.pdf", "/home/linarcx/mymine/print.pdf");
-
-//    QString arg = QString("%1 && %2").arg("cd " + qTemplatePath, "ag\ttest");
-//    pListAppVars = new QProcess(this);
-//    connect(pListAppVars, &QProcess::readyReadStandardOutput, this, &AddProject::returnAppVars);
-//    pListAppVars->startDetached("/usr/bin/sh", QStringList() << "-c" << arg);
-
-//    //    QString t = "test";
-//    QString options = QString("%1").arg("test");
-
-//    pListAppVars->startDetached("zsh -c \"ag test\"");
-//    pListAppVars->start("sh", QStringList() << "-c" << arg << "-o" << options);
-//    pListAppVars->start("/usr/bin/ag", QStringList() << "test");
-
-//    QProcess pCDHome;
-//    pCDHome.start("sh", QStringList() << "-c"
-//                                      << "cd /home/linarcx");
-//    pCDHome.waitForFinished(2000);
-
-//    connect(&pListAppVars, &QProcess::readyReadStandardOutput, [&]() {
-//        QString outPut = QString(pListAppVars.readAllStandardOutput());
-//        qDebug() << outPut;
-//        //        if (outPut.contains("by-id/usb*")) {
-//        //            QList<QString> qv;
-//        //            emit modelReady(qv);
-//        //        } else {
-//        //            QStringList list = outPut.split("\n");
-//        //            list.removeLast();
-//        //            std::regex word_regex = Utils::getPattern();
-//        //            QList<QString> model = list.toVector().toList();
-//        //            emit modelReady(model);
-//        //        }
-//    });
-
-//                std::regex r("(?<={{).+?(?=}})");
-//                QStringList items = Utils::performRegxOnString(r, f.readAll().toStdString());
-//                qDebug() << "sd";
-//                //                std::regex word_regex = Utils::getSearchPattern();
-//                //                qDebug() << "sd";
-//QRegularExpression::MatchType matchType = matchTypeComboBox->currentData().value<QRegularExpression::MatchType>();
-
-//    if (!FileUtil::checkExistDirectory(path.toString())) {
-//        FileUtil::makeDirectory(path.toString());
-//    }
-
-//    QString targetPath = QDir::currentPath() + "/QtCpp/feature/feature.cpp";
-//    string rawTarget = FileUtil::readStringFromFile(targetPath).toUtf8().toStdString();
-//    char* target = ConvertUtil::stringToCharPointer(rawTarget);
-
-//    string strAlternative = "rawAlternative.toString().toStdString();";
-//    const char* alternative = strAlternative.c_str();
-
-//    const char* cPattern = "\\{\\*c\\*}";
-//    target = RegexUtil::findReplaseRegx(cPattern, alternative, target, RegexUtil::Replacement::CAMELCASE);
-
-//    const char* uPattern = "\\{\\*u\\*}";
-//    target = RegexUtil::findReplaseRegx(uPattern, alternative, target, RegexUtil::Replacement::UPPERCASE);
-
-//    const char* lPattern = "\\{\\*l\\*}";
-//    target = RegexUtil::findReplaseRegx(lPattern, alternative, target, RegexUtil::Replacement::LOWERCASE);
-//    cout << target;
-
-//    FileUtil::writeFile(path.toString() + name.toString(), target);
-//    delete[] target;
-
-//    QStringList list = Utils::beautifyOutput(outPut);
-//    std::regex word_regex = Utils::getPattern();
-//    QVariantList parent = Utils::performRegx(word_regex, list);
-//    emit modelReady(parent);
-
-//        for (QString ex : exceptions) {
-//            }
-//        }

@@ -17,10 +17,10 @@ Multi Purpose Code Jenerator.
 
 ### Arch
 1. git version
-`trizen -S kindd-git`
+`trizen -S trinity-git`
 
 2. release version
-`trizen -S kindd`
+`trizen -S trinity`
 
 ### Build From Source
 2. Install these dependencies first:
@@ -50,7 +50,7 @@ Multi Purpose Code Jenerator.
 
 5. run the application:
 
-    `./kindd`
+    `./trinity`
 
 ## Contributing
 ![Open PR](https://img.shields.io/github/issues-pr-raw/LinArcX/Trinity.svg?style=flat-square) ![Closed PR](https://img.shields.io/github/issues-pr-closed/LinArcX/Trinity.svg?style=flat-square)
@@ -66,6 +66,8 @@ Multi Purpose Code Jenerator.
 
 Bugs should be reported [here](https://github.com/LinArcX/Trinity/issues) on the Github issues page.
 
+## Who is Trinity
+> She is [famous among hackers](https://en.wikipedia.org/wiki/Trinity_(The_Matrix)), and that Morpheus, one of a number of real-world hovercraft commanders, initially identified her and helped her escape from the program.
 
 ## Credits
 LinArcX
@@ -74,10 +76,8 @@ Github Repo:[https://github.com/LinArcX](https://github.com/LinArcX)
 E-Mail:linarcx@gmail.com
 
 <h1 align="center">
-	<img width="200" src="assets/trinity.gif" alt="Trinity">
+	<img width="500" src="assets/trinity.gif" alt="Trinity">
 	<br>
-	<br>
-	<p>kindful + dd</p>
 </h1>
 
 ## License
