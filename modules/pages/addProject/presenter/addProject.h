@@ -22,6 +22,7 @@ public:
 
 signals:
     void varsReady(QStringList vars);
+    void projectGenerated();
 
 private:
     QMap<QString, QStringList>* patternBothInFileNames;

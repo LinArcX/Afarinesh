@@ -1,11 +1,13 @@
 ############### General ###############
-QT += core qml quick quickcontrols2 widgets
-#CONFIG += c++11
-#QMAKE_CXXFLAGS += -std=c++17
-#QMAKE_CXXFLAGS += /std:c++17
+QT += core qml quick quickcontrols2
+
+VERSION = $$system(git log --pretty=format:'%h' -n 1)
+DEFINES += APP_VER=\\\"$$VERSION\\\"
+DEFINES += QT_DEPRECATED_WARNINGS
 
 ############### Compiler Flgas ###############
 DEFINES += QT_DEPRECATED_WARNINGS
+QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
 
 ############### Resources ###############
 SOURCES += $$files(modules/*.cpp, true) \
@@ -16,9 +18,20 @@ HEADERS += $$files(modules/*.h, true) \
 
 RESOURCES += qml.qrc
 
+############### Other files ###############
+OTHER_FILES += LICENSE\
+            README.md\
+            .gitignore
+
 ############### Libs ###############
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += glib-2.0 yaml-0.1
+
+############### Deployment ###############
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
 
 ############### Make Directory into Build Directory After Build ###############
 #mytarget.commands += $${QMAKE_MKDIR} $$shell_path($${OUT_PWD}/templates/QtCpp)
@@ -34,7 +47,6 @@ unix: PKGCONFIG += glib-2.0 yaml-0.1
 #export(copydata.commands)
 #QMAKE_EXTRA_TARGETS += first copydata
 
-############### Deployment ###############
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+#CONFIG += c++11
+#QMAKE_CXXFLAGS += -std=c++17
+#QMAKE_CXXFLAGS += /std:c++17

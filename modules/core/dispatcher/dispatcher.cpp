@@ -5,6 +5,8 @@
 #include "dispatcher.h"
 #include "modules/pages/addProject/presenter/addProject.h"
 #include "modules/pages/launcher/presenter/launcher.h"
+#include "modules/pages/listProjects/presenter/listProjects.h"
+#include "modules/pages/settings/presenter/settings.h"
 
 Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
     : QObject(parent)
@@ -27,5 +29,7 @@ Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
 void Dispatcher::registerTypes()
 {
     qmlRegisterType<AddProject>("AddProjectClass", 1, 0, "AddProjectClass");
+    qmlRegisterType<ListProjects>("ListProjectsClass", 1, 0, "ListProjectsClass");
     qmlRegisterType<Launcher>("LauncherClass", 1, 0, "LauncherClass");
+    qmlRegisterType<Settings>("SettingsClass", 1, 0, "SettingsClass");
 }

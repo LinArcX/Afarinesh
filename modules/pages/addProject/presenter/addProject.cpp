@@ -199,4 +199,7 @@ void AddProject::generateProject(QVariant templateName, QVariant projectName, QV
             }
         }
     }
+
+    QtUtil::setKeyValue(ORGANIZATION, PROJECTS, templateName.toString(), projectName.toString(), newProjectDirectory);
+    emit projectGenerated();
 }

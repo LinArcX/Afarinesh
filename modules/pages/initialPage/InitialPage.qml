@@ -6,16 +6,16 @@ Rectangle {
 
     Image {
         id: qImage
-        source: "qrc:/images/sad.svg"
+        source: "qrc:/images/add-file.svg"
         anchors.centerIn: qInitPage
-        sourceSize.width: 80
-        sourceSize.height: 80
+        sourceSize.width: 100
+        sourceSize.height: 100
         visible: true
     }
 
     Button {
         id: qButton
-        text: "Open A Template :)"
+        text: "Open New Template"
         onClicked: window.mDialog.open()
         anchors.top: qImage.bottom
         anchors.topMargin: 10

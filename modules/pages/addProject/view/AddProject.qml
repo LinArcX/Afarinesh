@@ -13,12 +13,15 @@ Rectangle {
     property var targetPath
     property int tableItems
     property int counter: 1
-    property var templateName
+
     property bool isTableValid: false
     property int filledTableItems: 0
 
     property var myItems: ({})
     property var tableIDs: ({})
+
+    property var templateName
+    property var templateIcon
 
     AddProjectClass {
         id: qAPC
@@ -43,6 +46,14 @@ Rectangle {
         qAPC.getVariables(templateName)
     }
 
+    LinarcxNotif{
+        id: qNotif
+        qIcon: "qrc:/images/confetti.svg"
+        qText: "Project Generated!"
+        qColor: CONS.blue
+        position: 0
+    }
+
     Connections {
         target: qAPC
         onVarsReady: {
@@ -54,12 +65,26 @@ Rectangle {
                 addRow(qTableVariables, "r" + counter++, vars[i], appPane.width, j-1)
             }
         }
+        onProjectGenerated:{
+            btnGenerate.enabled = false
+            qNotif.notificaitonTurnOn()
+        }
+    }
+
+    Image {
+        id: qTemplateIcon
+        source: templateIcon
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 10
+        sourceSize.width: 100
+        sourceSize.height: 100
     }
 
     LinarcxHLine {
         id: chooseProjectName
         header: "1. Name of the project"
-        anchors.top: parent.top
+        anchors.top: qTemplateIcon.bottom
         anchors.topMargin: 10
     }
 
@@ -96,7 +121,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
         width: txtProjectName.width
-        qColor: CONS.green500
+        qColor: CONS.orange400
         iconFamily: Hack.family
         iconName: Hack.nf_mdi_select
         iconSize: 30
@@ -129,6 +154,7 @@ Rectangle {
         anchors.topMargin: 10
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+        leftPadding: 10
 
         Column {
             id: qTableVariables
@@ -193,11 +219,6 @@ Rectangle {
     LinarcxButton {
         id: btnGoToHome
         btnTxt: "Home"
-        onClicked: {
-            while (qStackView.depth > 1) {
-                qStackView.pop()
-            }
-        }
         anchors.bottom: parent.bottom
         width: parent.width / 8 * 1
         height: 40
@@ -206,6 +227,11 @@ Rectangle {
         iconFamily: Hack.family
         iconName: Hack.nf_oct_home
         iconSize: 30
+        onClicked: {
+            while (qStackView.depth > 1) {
+                qStackView.pop()
+            }
+        }
     }
 
     Component {

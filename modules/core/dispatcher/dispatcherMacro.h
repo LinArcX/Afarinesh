@@ -4,6 +4,7 @@
 #define DISPATCHER "dispatcher"
 #define MAIN_QML "qrc:/pages/launcher.qml"
 
-#define ORGANIZATION "io.github.linarcx"
+#define ORGANIZATION "trinity"
 #define APPLICATION "trinity"
+#define PROJECTS "projects"
 #define TEMPLATES_GROUP "Templates"

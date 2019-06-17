@@ -3,8 +3,9 @@
         <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
         <file alias="AddProject.qml">modules/pages/addProject/view/AddProject.qml</file>
         <file alias="AddFeature.qml">modules/pages/addFeature/AddFeature.qml</file>
-        <file alias="ListProjects.qml">modules/pages/listProjects/ListPorjects.qml</file>
+        <file alias="ListProjects.qml">modules/pages/listProjects/view/ListPorjects.qml</file>
         <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
+        <file alias="Settings.qml">modules/pages/settings/view/Settings.qml</file>
     </qresource>
     <qresource prefix="/components">
         <file alias="qml/LinarcxHLine.qml">util/qml/LinarcxHLine.qml</file>
@@ -20,12 +21,21 @@
         <file alias="qml/LinarcxTableView.qml">util/qml/LinarcxTableView.qml</file>
         <file alias="qml/LinArcxDialog.qml">util/qml/LinArcxDialog.qml</file>
         <file alias="qml/LinarcxImageToolTiper.qml">util/qml/LinarcxImageToolTiper.qml</file>
+        <file alias="qml/LinarcxNotif.qml">util/qml/LinarcxNotif.qml</file>
+        <file alias="qml/LinArcXHLine.qml">util/qml/LinArcXHLine.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="warning.svg">util/images/warning.svg</file>
         <file alias="sad.svg">util/images/sad.svg</file>
         <file alias="add-folder.svg">util/images/add-folder.svg</file>
         <file alias="remove-folder.svg">util/images/remove-folder.svg</file>
+        <file alias="confetti.svg">util/images/confetti.svg</file>
+        <file alias="settings.svg">util/images/settings.svg</file>
+        <file alias="block.svg">util/images/block.svg</file>
+        <file alias="fontSize.svg">util/images/fontSize.svg</file>
+        <file alias="palette.svg">util/images/palette.svg</file>
+        <file alias="text.svg">util/images/text.svg</file>
+        <file alias="add-file.svg">util/images/add-file.svg</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="fontAwesome/Awesome.qml">util/fonts/fontawesome/Awesome.qml</file>
@@ -37,5 +47,9 @@
     </qresource>
     <qresource prefix="/js">
         <file alias="Constants.js">util/js/Constants.js</file>
+        <file alias="SettingsStrings.js">util/strings/SettingsStrings.js</file>
+        <file alias="CoreStrings.js">util/strings/CoreStrings.js</file>
+        <file alias="ElementCreator.js">util/js/ElementCreator.js</file>
+        <file alias="CanvasUtil.js">util/js/CanvasUtil.js</file>
     </qresource>
 </RCC>

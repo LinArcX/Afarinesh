@@ -9,6 +9,7 @@ Image {
     property var qWidth
     property string qTitle
     property int qDirection
+    property var mParent
 
     signal imageClicked
 
@@ -18,7 +19,7 @@ Image {
 
     LinarcxToolTip {
         id: qToolTip
-        mother: qImage
+        mother: mParent ? mParent : qImage
         direction: qDirection ? qDirection : 3
         title: qTitle
     }

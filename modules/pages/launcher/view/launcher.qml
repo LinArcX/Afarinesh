@@ -37,79 +37,40 @@ Window {
         }
     }
 
-    //---------------- Popup --------------//
-    LinarcxPopUp {
-        id: mPopUp
-        mImage: "qrc:/images/warning.svg"
-        mTitle: "Are you Sure?"
-        mBody: Rectangle {
-            anchors.fill: parent
-            Button {
-                id: qYes
-                text: "Yes"
-                anchors.top: parent.top
-                anchors.topMargin: 10
-                anchors.right: parent.right
-                anchors.rightMargin: 10
-                onClicked: {
-                    mPopUp.close()
-                    qLC.removeItem(qListView.currentItem.data[2].text)
-                    qModel.remove(qListView.currentIndex)
-                    qStackView.pop()
-                    qRemove.opacity = 0.3
-                    qRemove.enabled = false
-                }
-            }
-
-            Button {
-                text: "No"
-                anchors.top: qYes.top
-                anchors.right: qYes.left
-                anchors.rightMargin: 10
-                onClicked: mPopUp.close()
-            }
-        }
-    }
-
     StackView {
         id: qStackView
-        width: parent.width / 5 * 4
+        width: parent.width - 50
         height: parent.height
         anchors.left: qMenu.right
     }
 
-//    Button{
-//        anchors.left: qMenu.right
-//        text: "lift"
-//        anchors.verticalCenter: qMenu.verticalCenter
-//        onClicked: {
-//            qMenu.width = 50
-//        }
-//    }
-
+    //------------------- List of templates ----------------------//
     Rectangle {
         id: qMenu
-        width: parent.width / 5
+        width: 50
         height: parent.height
-        color: "transparent"
+        color: "#424242" //"#767676"
 
-        //------------------- List of templates ----------------------//
-        Rectangle {
-            id: qProjects
+        ListModel {
+            id: qModel
+        }
+
+        ScrollView {
+            id: mParent
+            clip: true
             width: parent.width
-            height: parent.height - qButtonsArea.height
-            color: "#424242" //"#767676"
-            z: 1
-
-            ListModel {
-                id: qModel
-            }
+            height: window.height - (qSettings.height + qAdd.height)
+            anchors.top: parent.top
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
 
             ListView {
                 id: qListView
-                width: parent.width
-                model: qModel
                 clip: true
+                spacing: 60
+                model: qModel
+                width: parent.width
+                height: parent.height
                 flickableDirection: Flickable.VerticalFlick
                 boundsBehavior: Flickable.StopAtBounds
                 ScrollBar.vertical: ScrollBar {
@@ -120,241 +81,56 @@ Window {
                     width: parent.width
                     color: "transparent"
 
-                    onHeightChanged: {
-                        height = qIcon.height + qAuthorLabel.height + 5
-                        qEmptyArea.height = qProjects.height - qRectContent.height - height
-                        qProjectsArea.height += height
-                    }
-
-                    Component.onCompleted: {
-                        height = qIcon.height + qAuthorLabel.height + 5
-                        qListView.height += height
-                    }
-
-                    MouseArea {
-                        id: qProjectsArea
-                        anchors.fill: parent
-                        onClicked: {
+                    LinarcxImageToolTiper {
+                        id: qCreateIso
+                        qImg: icon
+                        qTitle: name
+                        sourceSize.height: 40
+                        sourceSize.width: 40
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        anchors.rightMargin: 5
+                        anchors.topMargin: 5
+                        mParent: window
+                        onImageClicked: {
                             qStackView.push(listProjects, {
-                                                "templateName": name
+                                                "templateName": name,
+                                                "templateIcon": icon,
+                                                "templateAuthor": author,
+                                                "templateComment": comment,
                                             })
                             qListView.currentIndex = index
-                            qRemove.opacity = 1
-                            qRemove.enabled = true
                         }
                     }
-
-                    Text {
-                        id: qNameLabel
-                        text: qsTr("Name: ")
-                        color: "#BA68C8"
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.topMargin: 5
-                        font.bold: true
-                    }
-
-                    Text {
-                        id: qName
-                        text: name
-                        color: "white"
-                        anchors.left: qNameLabel.right
-                        anchors.leftMargin: 5
-                        anchors.top: qNameLabel.top
-                    }
-
-                    Text {
-                        id: qAuthorLabel
-                        text: qsTr("Author: ")
-                        color: "#BA68C8"
-                        anchors.left: parent.left
-                        anchors.top: qNameLabel.bottom
-                        anchors.topMargin: 5
-                        font.bold: true
-                    }
-
-                    Text {
-                        id: qAuthor
-                        text: author
-                        color: "white"
-                        anchors.left: qAuthorLabel.right
-                        anchors.leftMargin: 5
-                        anchors.top: qAuthorLabel.top
-                    }
-
-                    Image {
-                        id: qIcon
-                        source: icon
-                        anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        anchors.bottom: qAuthor.bottom
-                        sourceSize.width: qName.height + qAuthor.height
-                        sourceSize.height: qName.height + qAuthor.height
-                    }
-
-                    Rectangle {
-                        width: qProjects.width
-                        height: 1
-                        color: "#212121"
-                        anchors.left: parent.left
-                        anchors.top: qIcon.bottom
-                        anchors.topMargin: 1
-                    }
-                }
-            }
-
-            MouseArea {
-                id: qEmptyArea
-                width: parent.width
-                height: qProjects.height
-                anchors.bottom: parent.bottom
-                onClicked: {
-                    qRemove.opacity = 0.3
-                    qRemove.enabled = false
-                    qStackView.pop()
                 }
             }
         }
 
-        //------------------- Add/Remove Templates ----------------------//
-        Rectangle {
-            id: qButtonsArea
-            width: qProjects.width
-            height: 40
-            anchors.top: qProjects.bottom
-            color: "#212121"
-            z: 1
+        LinarcxImageToolTiper {
+            id: qAdd
+            qImg: "qrc:/images/add-file.svg"
+            qTitle: "Add new template"
+            sourceSize.height: 40
+            sourceSize.width: 40
+            anchors.bottom: qSettings.top
+            anchors.bottomMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+            onImageClicked: qFileDialog.open()
+        }
 
-            Image {
-                id: qAdd
-                source: "qrc:/images/add-folder.svg"
-                sourceSize.height: parent.height - 10
-                sourceSize.width: parent.height - 10
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-
-                //        Text {
-                //            id: qAdd
-                //            font.family: Hack.family
-                //            text: Hack.nf_custom_folder_open
-                //            anchors.left: parent.left
-                //            anchors.leftMargin: 10
-                //            anchors.verticalCenter: parent.verticalCenter
-                //            font.pixelSize: parent.height
-                //            color: CONS.green500
-                LinarcxToolTip {
-                    id: qAddTooTip
-                    mother: qAdd
-                    direction: 2
-                    title: "Add Template"
-                }
-
-                states: [
-                    State {
-                        name: "scale"
-                        PropertyChanges {
-                            target: qAdd
-                            scale: 0.9
-                        }
-                    },
-                    State {
-                        name: "normal"
-                        PropertyChanges {
-                            target: qAdd
-                            scale: 1
-                        }
-                    }
-                ]
-
-                transitions: Transition {
-                    ScaleAnimator {
-                        duration: 100
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: {
-                        qFileDialog.open()
-                    }
-                    onEntered: {
-                        qAdd.state = "scale"
-                        qAddTooTip.visible = true
-                    }
-                    onExited: {
-                        qAdd.state = "normal"
-                        qAddTooTip.visible = false
-                    }
-                }
-            }
-            Image {
-                id: qRemove
-                source: "qrc:/images/remove-folder.svg"
-                sourceSize.height: parent.height - 10
-                sourceSize.width: parent.height - 10
-                anchors.left: qAdd.right
-                anchors.leftMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-                enabled: false
-                opacity: 0.3
-
-                //        Text {
-                //            id: qRemove
-                //            font.family: Hack.family
-                //            text: Hack.nf_mdi_delete_empty
-                //            anchors.left: qAdd.right
-                //            anchors.leftMargin: 10
-                //            anchors.verticalCenter: parent.verticalCenter
-                //            font.pixelSize: parent.height
-                //            color: CONS.orange400
-                LinarcxToolTip {
-                    id: qRemoveTooTip
-                    mother: qRemove
-                    direction: 2
-                    title: "Remove Template"
-                }
-
-                states: [
-                    State {
-                        name: "scale"
-                        PropertyChanges {
-                            target: qRemove
-                            scale: 0.9
-                        }
-                    },
-                    State {
-                        name: "normal"
-                        PropertyChanges {
-                            target: qRemove
-                            scale: 1
-                        }
-                    }
-                ]
-
-                transitions: Transition {
-                    ScaleAnimator {
-                        duration: 100
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: {
-                        mPopUp.open()
-                    }
-                    onEntered: {
-                        qRemove.state = "scale"
-                        qRemoveTooTip.visible = true
-                    }
-                    onExited: {
-                        qRemove.state = "normal"
-                        qRemoveTooTip.visible = false
-                    }
-                }
-            }
+        LinarcxImageToolTiper {
+            id: qSettings
+            qImg: "qrc:/images/settings.svg"
+            qTitle: "Settings"
+            sourceSize.height: 40
+            sourceSize.width: 40
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 5
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+            onImageClicked: qStackView.push("qrc:/pages/Settings.qml")
         }
     }
 
@@ -401,8 +177,8 @@ Window {
                               })
                 qLC.savePath(templateInfo[0], path)
                 qStackView.push(initialPage)
-                qRemove.opacity = 1
-                qRemove.enabled = true
+                //                qRemove.opacity = 1
+                //                qRemove.enabled = true
             }
         }
     }
@@ -417,3 +193,246 @@ Window {
         qLC.getAllKeys()
     }
 }
+
+
+//    Button{//        anchors.left: qMenu.right//        text: "lift"//        anchors.verticalCenter: qMenu.verticalCenter
+//        onClicked: {
+//            qMenu.width = 50
+//        }
+//    }
+
+//            MouseArea {
+//                id: qEmptyArea
+//                width: parent.width
+//                height: qProjects.height
+//                anchors.bottom: parent.bottom
+//                onClicked: {
+//                    qRemove.opacity = 0.3
+//                    qRemove.enabled = false
+//                    qStackView.pop()
+//                }
+//            }
+
+//                    onHeightChanged: {
+//                        height = qIcon.height + qAuthorLabel.height + 5
+//                        //qEmptyArea.height = qProjects.height - qRectContent.height - height
+//                        qProjectsArea.height += height
+//                    }
+
+//                    Component.onCompleted: {
+//                        height = qIcon.height + qAuthorLabel.height + 5
+//                        qListView.height += height
+//                    }
+
+//                    MouseArea {
+//                        id: qProjectsArea
+//                        anchors.fill: parent
+//                        onClicked: {
+//                            qStackView.push(listProjects, {
+//                                                "templateName": name,
+//                                                "templateIcon": icon
+//                                            })
+//                            qListView.currentIndex = index
+//                            qRemove.opacity = 1
+//                            qRemove.enabled = true
+//                        }
+//                    }
+
+//                    Text {
+//                        id: qNameLabel
+//                        text: qsTr("Name: ")
+//                        color: "#BA68C8"
+//                        anchors.left: parent.left
+//                        anchors.top: parent.top
+//                        anchors.topMargin: 5
+//                        font.bold: true
+//                    }
+
+//                    Text {
+//                        id: qName
+//                        text: name
+//                        color: "white"
+//                        anchors.left: qNameLabel.right
+//                        anchors.leftMargin: 5
+//                        anchors.top: qNameLabel.top
+//                    }
+
+//                    Text {
+//                        id: qAuthorLabel
+//                        text: qsTr("Author: ")
+//                        color: "#BA68C8"
+//                        anchors.left: parent.left
+//                        anchors.top: qNameLabel.bottom
+//                        anchors.topMargin: 5
+//                        font.bold: true
+//                    }
+
+//                    Text {
+//                        id: qAuthor
+//                        text: author
+//                        color: "white"
+//                        anchors.left: qAuthorLabel.right
+//                        anchors.leftMargin: 5
+//                        anchors.top: qAuthorLabel.top
+//                    }
+
+//                    Image {
+//                        id: qIcon
+//                        source: icon
+//                        anchors.right: parent.right
+//                        anchors.rightMargin: 10
+//                        anchors.bottom: qAuthor.bottom
+//                        sourceSize.width: qName.height + qAuthor.height
+//                        sourceSize.height: qName.height + qAuthor.height
+//                    }
+
+//                    Rectangle {
+//                        width: qProjects.width
+//                        height: 1
+//                        color: "#212121"
+//                        anchors.left: parent.left
+//                        anchors.top: qIcon.bottom
+//                        anchors.topMargin: 1
+//                    }
+
+//------------------- Add/Remove Templates ----------------------//
+//        Rectangle {
+//            id: qButtonsArea
+//            width: qProjects.width
+//            height: 40
+//            anchors.top: qProjects.bottom
+//            color: "#212121"
+//            z: 1
+
+//            Image {
+//                id: qAdd
+//                source: "qrc:/images/add-folder.svg"
+//                sourceSize.height: parent.height - 10
+//                sourceSize.width: parent.height - 10
+//                anchors.left: parent.left
+//                anchors.leftMargin: 10
+//                anchors.verticalCenter: parent.verticalCenter
+
+//                //        Text {
+//                //            id: qAdd
+//                //            font.family: Hack.family
+//                //            text: Hack.nf_custom_folder_open
+//                //            anchors.left: parent.left
+//                //            anchors.leftMargin: 10
+//                //            anchors.verticalCenter: parent.verticalCenter
+//                //            font.pixelSize: parent.height
+//                //            color: CONS.green500
+//                LinarcxToolTip {
+//                    id: qAddTooTip
+//                    mother: qAdd
+//                    direction: 2
+//                    title: "Add Template"
+//                }
+
+//                states: [
+//                    State {
+//                        name: "scale"
+//                        PropertyChanges {
+//                            target: qAdd
+//                            scale: 0.9
+//                        }
+//                    },
+//                    State {
+//                        name: "normal"
+//                        PropertyChanges {
+//                            target: qAdd
+//                            scale: 1
+//                        }
+//                    }
+//                ]
+
+//                transitions: Transition {
+//                    ScaleAnimator {
+//                        duration: 100
+//                    }
+//                }
+
+//                MouseArea {
+//                    anchors.fill: parent
+//                    hoverEnabled: true
+//                    onClicked: {
+//                        qFileDialog.open()
+//                    }
+//                    onEntered: {
+//                        qAdd.state = "scale"
+//                        qAddTooTip.visible = true
+//                    }
+//                    onExited: {
+//                        qAdd.state = "normal"
+//                        qAddTooTip.visible = false
+//                    }
+//                }
+//            }
+//            Image {
+//                id: qRemove
+//                source: "qrc:/images/remove-folder.svg"
+//                sourceSize.height: parent.height - 10
+//                sourceSize.width: parent.height - 10
+//                anchors.left: qAdd.right
+//                anchors.leftMargin: 10
+//                anchors.verticalCenter: parent.verticalCenter
+//                enabled: false
+//                opacity: 0.3
+
+//                //        Text {
+//                //            id: qRemove
+//                //            font.family: Hack.family
+//                //            text: Hack.nf_mdi_delete_empty
+//                //            anchors.left: qAdd.right
+//                //            anchors.leftMargin: 10
+//                //            anchors.verticalCenter: parent.verticalCenter
+//                //            font.pixelSize: parent.height
+//                //            color: CONS.orange400
+//                LinarcxToolTip {
+//                    id: qRemoveTooTip
+//                    mother: qRemove
+//                    direction: 2
+//                    title: "Remove Template"
+//                }
+
+//                states: [
+//                    State {
+//                        name: "scale"
+//                        PropertyChanges {
+//                            target: qRemove
+//                            scale: 0.9
+//                        }
+//                    },
+//                    State {
+//                        name: "normal"
+//                        PropertyChanges {
+//                            target: qRemove
+//                            scale: 1
+//                        }
+//                    }
+//                ]
+
+//                transitions: Transition {
+//                    ScaleAnimator {
+//                        duration: 100
+//                    }
+//                }
+
+//                MouseArea {
+//                    anchors.fill: parent
+//                    hoverEnabled: true
+//                    onClicked: {
+//                        mPopUp.open()
+//                    }
+//                    onEntered: {
+//                        qRemove.state = "scale"
+//                        qRemoveTooTip.visible = true
+//                    }
+//                    onExited: {
+//                        qRemove.state = "normal"
+//                        qRemoveTooTip.visible = false
+//                    }
+//                }
+//            }
+//        }
+
