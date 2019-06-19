@@ -9,8 +9,6 @@ import "qrc:/js/Constants.js" as CONS
 Rectangle {
     id: appPane
     color: "white"
-//    width: parent.width
-//    height: parent.height
 
     property var name
 
@@ -18,55 +16,46 @@ Rectangle {
 
     LinarcxButton {
         id: btnGenerate
-        btnTxt: "Generate"
-        width: parent.width / 8 * 6
         height: 40
+        width: parent.width / 8 * 6
         anchors.left: parent.left
-        qColor: CONS.green500
         anchors.bottom: parent.bottom
-        iconFamily: Hack.family
-        iconName: Hack.nf_fa_rocket
-        iconSize: 30
 
-//        enabled: {
-//            if (lblTargetPath.mText != "" && txtProjectName.text != ""
-//                    && tableItems == filledTableItems)
-//                btnGenerate.enabled = true
-//            else
-//                btnGenerate.enabled = false
-//        }
-//        onClicked: {
-//            qAPC.generateProject(templateName, txtProjectName.text,
-//                                 lblTargetPath.mText, myItems)
-//        }
+        btnText: 'Generate'
+        btnIcon: Hack.nf_fa_rocket
+        btnIconSize: 30
+        btnIconColor: CONS.green500
+        btnIconFamily: Hack.family
     }
 
     LinarcxButton {
         id: btnGoBack
-        btnTxt: "Back"
         height: 40
         width: parent.width / 8 * 1
         anchors.bottom: parent.bottom
         anchors.left: btnGenerate.right
-        qColor: CONS.deppOrang500
-        iconFamily: Hack.family
-        iconName: Hack.nf_mdi_arrow_left_box
-        iconSize: 30
+
+        btnText: 'Back'
+        btnIcon: Hack.nf_mdi_arrow_left_box
+        btnIconSize: 30
+        btnIconColor: CONS.deppOrang500
+        btnIconFamily: Hack.family
+
         onClicked: qStackView.pop()
     }
 
     LinarcxButton {
         id: btnGoToHome
-        btnTxt: "Home"
         height: 40
         width: parent.width / 8 * 1
-
         anchors.bottom: parent.bottom
         anchors.left: btnGoBack.right
-        qColor: CONS.indigo500
-        iconFamily: Hack.family
-        iconName: Hack.nf_oct_home
-        iconSize: 30
+
+        btnText: 'Home'
+        btnIcon: Hack.nf_oct_home
+        btnIconSize: 30
+        btnIconColor: CONS.indigo500
+        btnIconFamily: Hack.family
 
         onClicked: {
             while (qStackView.depth > 1) {

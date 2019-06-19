@@ -1,55 +1,74 @@
 <RCC>
+    <qresource prefix="/">
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
     <qresource prefix="/pages">
         <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
+        <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
+        <file alias="ListProjects.qml">modules/pages/listProjects/view/ListPorjects.qml</file>
         <file alias="AddProject.qml">modules/pages/addProject/view/AddProject.qml</file>
         <file alias="AddFeature.qml">modules/pages/addFeature/AddFeature.qml</file>
-        <file alias="ListProjects.qml">modules/pages/listProjects/view/ListPorjects.qml</file>
-        <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
         <file alias="Settings.qml">modules/pages/settings/view/Settings.qml</file>
     </qresource>
     <qresource prefix="/components">
-        <file alias="qml/LinarcxHLine.qml">util/qml/LinarcxHLine.qml</file>
+        <file alias="qml/LinarcxButton.qml">util/qml/LinarcxButton.qml</file>
         <file alias="qml/LinarcxCardView.qml">util/qml/LinarcxCardView.qml</file>
-        <file alias="qml/LinarcxDialog.qml">util/qml/LinarcxDialog.qml</file>
+        <file alias="qml/LinArcxDialog.qml">util/qml/LinArcxDialog.qml</file>
+        <file alias="qml/LinArcxHLine.qml">util/qml/LinArcxHLine.qml</file>
+        <file alias="qml/LinarcxImageToolTiper.qml">util/qml/LinarcxImageToolTiper.qml</file>
+        <file alias="qml/LinarcxLabel.qml">util/qml/LinarcxLabel.qml</file>
+        <file alias="qml/LinarcxNotif.qml">util/qml/LinarcxNotif.qml</file>
         <file alias="qml/LinarcxPopUp.qml">util/qml/LinarcxPopUp.qml</file>
         <file alias="qml/LinarcxTextField.qml">util/qml/LinarcxTextField.qml</file>
         <file alias="qml/LinarcxToast.qml">util/qml/LinarcxToast.qml</file>
         <file alias="qml/LinarcxToastComponent.qml">util/qml/LinarcxToastComponent.qml</file>
         <file alias="qml/LinarcxToolTip.qml">util/qml/LinarcxToolTip.qml</file>
-        <file alias="qml/LinarcxButton.qml">util/qml/LinarcxButton.qml</file>
-        <file alias="qml/LinarcxLabel.qml">util/qml/LinarcxLabel.qml</file>
-        <file alias="qml/LinarcxTableView.qml">util/qml/LinarcxTableView.qml</file>
-        <file alias="qml/LinArcxDialog.qml">util/qml/LinArcxDialog.qml</file>
-        <file alias="qml/LinarcxImageToolTiper.qml">util/qml/LinarcxImageToolTiper.qml</file>
-        <file alias="qml/LinarcxNotif.qml">util/qml/LinarcxNotif.qml</file>
-        <file alias="qml/LinArcXHLine.qml">util/qml/LinArcXHLine.qml</file>
+        <file alias="qml/+fusion/LinarcxButton.qml">util/qml/+fusion/LinarcxButton.qml</file>
+        <file alias="qml/+imagine/LinarcxButton.qml">util/qml/+imagine/LinarcxButton.qml</file>
+        <file alias="qml/+imagine/Theme.qml">util/qml/+imagine/Theme.qml</file>
+        <file alias="qml/+material/LinarcxButton.qml">util/qml/+material/LinarcxButton.qml</file>
+        <file alias="qml/+universal/LinarcxButton.qml">util/qml/+universal/LinarcxButton.qml</file>
+        <file alias="qml/Theme.qml">util/qml/Theme.qml</file>
+        <file alias="qml/qmldir">util/qml/qmldir</file>
     </qresource>
     <qresource prefix="/images">
-        <file alias="warning.svg">util/images/warning.svg</file>
-        <file alias="sad.svg">util/images/sad.svg</file>
-        <file alias="add-folder.svg">util/images/add-folder.svg</file>
-        <file alias="remove-folder.svg">util/images/remove-folder.svg</file>
+        <file alias="add-file.svg">util/images/add-file.svg</file>
         <file alias="confetti.svg">util/images/confetti.svg</file>
-        <file alias="settings.svg">util/images/settings.svg</file>
-        <file alias="block.svg">util/images/block.svg</file>
         <file alias="fontSize.svg">util/images/fontSize.svg</file>
         <file alias="palette.svg">util/images/palette.svg</file>
+        <file alias="sad.svg">util/images/sad.svg</file>
+        <file alias="settings.svg">util/images/settings.svg</file>
         <file alias="text.svg">util/images/text.svg</file>
-        <file alias="add-file.svg">util/images/add-file.svg</file>
+        <file alias="warning.svg">util/images/warning.svg</file>
     </qresource>
-    <qresource prefix="/fonts">
+    <qresource prefix="/fonts">       
+        <file alias="Adele.ttf">util/fonts/Adele.ttf</file>
+        <file alias="AlexBrush.ttf">util/fonts/AlexBrush.ttf</file>
+        <file alias="Aller.ttf">util/fonts/Aller.ttf</file>
+        <file alias="Amatic.ttf">util/fonts/Amatic.ttf</file>
+        <file alias="BeautifulCreatures.ttf">util/fonts/BeautifulCreatures.ttf</file>
+        <file alias="CaviarDreams.ttf">util/fonts/CaviarDreams.ttf</file>
+        <file alias="Daywalker.ttf">util/fonts/Daywalker.ttf</file>
+        <file alias="FontAwesome.ttf">util/fonts/FontAwesome.ttf</file>
+        <file alias="RadioSpace.ttf">util/fonts/RadioSpace.ttf</file>
+        <file alias="Shabnam.ttf">util/fonts/Shabnam.ttf</file>
+        <file alias="Vazir.ttf">util/fonts/Vazir.ttf</file>
+        <file alias="XMYekan.ttf">util/fonts/XMYekan.ttf</file>
         <file alias="fontAwesome/Awesome.qml">util/fonts/fontawesome/Awesome.qml</file>
         <file alias="fontAwesome/fontawesome-webfont.ttf">util/fonts/fontawesome/fontawesome-webfont.ttf</file>
-        <file alias="fontAwesome/qmldir">util/fonts/fontawesome/qmldir</file>
         <file alias="hack/qmldir">util/fonts/Hack/qmldir</file>
         <file alias="hack/Hack.qml">util/fonts/Hack/Hack.qml</file>
         <file alias="hack/Hack Regular Nerd Font Complete.ttf">util/fonts/Hack/Hack Regular Nerd Font Complete.ttf</file>
+        <file alias="fontAwesome/qmldir">util/fonts/fontawesome/qmldir</file>
     </qresource>
     <qresource prefix="/js">
         <file alias="Constants.js">util/js/Constants.js</file>
-        <file alias="SettingsStrings.js">util/strings/SettingsStrings.js</file>
+        <file alias="CanvasUtil.js">util/js/CanvasUtil.js</file>
         <file alias="CoreStrings.js">util/strings/CoreStrings.js</file>
         <file alias="ElementCreator.js">util/js/ElementCreator.js</file>
-        <file alias="CanvasUtil.js">util/js/CanvasUtil.js</file>
+        <file alias="SettingsStrings.js">util/strings/SettingsStrings.js</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file alias="Done.wav">util/sounds/Done.wav</file>
     </qresource>
 </RCC>

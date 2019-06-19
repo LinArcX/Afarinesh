@@ -1,7 +1,7 @@
 #pragma once
 
-#define COMPANY_NAME "kindd"
-#define APP_NAME "kindd"
+#define COMPANY_NAME "trinity"
+#define APP_NAME "settings"
 
 #define APP_GROUP "App"
 #define STYLE "style"

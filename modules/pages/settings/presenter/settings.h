@@ -21,7 +21,6 @@ public:
     static void loadAppStyle();
     void loadFontFamily();
     static void loadFontSize();
-    Q_INVOKABLE int loadBlockSize();
 
     QString appStyleName();
     Q_INVOKABLE QVariantList appStyles();

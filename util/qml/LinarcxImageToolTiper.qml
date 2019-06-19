@@ -5,24 +5,17 @@ import QtQuick.Window 2.3
 Image {
     id: qImage
 
-    property var qImg
-    property var qWidth
-    property string qTitle
-    property int qDirection
-    property var mParent
-
-    signal imageClicked
-
     source: qImg
     sourceSize.height: qWidth ? qWidth : 10
     sourceSize.width: qWidth ? qWidth : 10
 
-    LinarcxToolTip {
-        id: qToolTip
-        mother: mParent ? mParent : qImage
-        direction: qDirection ? qDirection : 3
-        title: qTitle
-    }
+    property var qImg
+    property var qWidth
+    property int qDirection
+    property var mParent
+
+    signal imageClicked
+    signal imageEntered
 
     states: [
         State {
@@ -55,11 +48,17 @@ Image {
         }
         onEntered: {
             qImage.state = "scale"
-            qToolTip.visible = true
+            imageEntered()
         }
         onExited: {
             qImage.state = "normal"
-            qToolTip.visible = false
         }
     }
 }
+
+//    LinarcxToolTip {
+//        id: qToolTip
+//        mother: mParent ? mParent : qImage
+//        //direction: qDirection ? qDirection : 3
+//        title: qTitle
+//    }

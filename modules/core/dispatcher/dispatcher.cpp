@@ -12,12 +12,15 @@ Dispatcher::Dispatcher(QGuiApplication& mApp, QObject* parent)
     : QObject(parent)
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QQuickStyle::setStyle("Universal");
 
-    // Load Splash Screen
-    QQmlApplicationEngine* mEngine = getEngine();
+    Settings& settings = *new Settings();
+    settings.loadAppStyle();
+    settings.loadFontFamily();
+    settings.loadFontSize();
 
     registerTypes();
+
+    QQmlApplicationEngine* mEngine = getEngine();
 
     mEngine->load(QUrl(QLatin1String(MAIN_QML)));
     QQmlContext* mContext = getContext();

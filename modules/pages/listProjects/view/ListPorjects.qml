@@ -106,7 +106,7 @@ Rectangle {
         }
     }
 
-    LinarcxHLine {
+    LinArcxHLine {
         id: listOfAllProjects
         header: "List of all projects"
         anchors.top: qInfo.bottom
@@ -126,52 +126,60 @@ Rectangle {
 
     LinarcxButton {
         id: btnNewProject
-        btnTxt: "Create New " + templateName + " Project"
+        height: 40
+        width: parent.width / 8 * 5
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+
+        btnText: "Create New " + templateName + " Project"
+        btnIcon: Hack.nf_dev_sizzlejs
+        btnIconSize: 30
+        btnIconColor: CONS.green500
+        btnIconFamily: Hack.family
+
         onClicked: qStackView.push(addProject, {
                                        "templateName": templateName,
-                                       "templateIcon": templateIcon
+                                       "templateIcon": templateIcon,
+                                       "templateAuthor": templateAuthor,
+                                       "templateComment": templateComment
                                    })
-        anchors.bottom: parent.bottom
-        width: parent.width / 8 * 5
-        height: 40
-        anchors.left: parent.left
-        qColor: CONS.green500
-        iconFamily: Hack.family
-        iconName: Hack.nf_dev_sizzlejs
-        iconSize: 30
     }
 
     LinarcxButton {
         id: btnDeleteTemplate
-        btnTxt: "Delete Template"
-        onClicked: mPopUp.open()
-        anchors.bottom: parent.bottom
-        width: parent.width / 8 * 2
         height: 40
+        width: parent.width / 8 * 2
+        anchors.bottom: parent.bottom
         anchors.left: btnNewProject.right
-        qColor: CONS.red500
-        iconFamily: Hack.family
-        iconName: Hack.nf_mdi_delete_forever
-        iconSize: 25
+
+        btnText: "Delete Template"
+        btnIcon: Hack.nf_mdi_delete_forever
+        btnIconSize: 25
+        btnIconColor: CONS.red500
+        btnIconFamily: Hack.family
+
+        onClicked: mPopUp.open()
     }
 
     LinarcxButton {
         id: btnGoToHome
-        btnTxt: "Home"
+        height: 40
+        width: parent.width / 8 * 1
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.left: btnDeleteTemplate.right
+
+        btnText: "Home"
+        btnIcon: Hack.nf_oct_home
+        btnIconSize: 30
+        btnIconColor: CONS.indigo500
+        btnIconFamily: Hack.family
+
         onClicked: {
             while (qStackView.depth > 1) {
                 qStackView.pop()
             }
         }
-        anchors.bottom: parent.bottom
-        width: parent.width / 8 * 1
-        height: 40
-        anchors.left: btnDeleteTemplate.right
-        anchors.right: parent.right
-        qColor: CONS.indigo500
-        iconFamily: Hack.family
-        iconName: Hack.nf_oct_home
-        iconSize: 30
     }
 
     function addProjects(projects) {
@@ -203,9 +211,7 @@ Rectangle {
     }
 }
 
-//Qt.createQmlObject(//        "import QtQuick.Controls 2.5; "//        + "import \"qrc:/components/qml/\";"//            + "LinarcxCardView {"//                + "width: parent.width / 4;"//                + "height: 70;"
-//                + "shadowHOff: 1;"
-//                + "shadowVOff: 1;"
+//Qt.createQmlObject(//        "import QtQuick.Controls 2.5; "//        + "import \"qrc:/components/qml/\";"//            + "LinarcxCardView {"//                + "width: parent.width / 4;"//                + "height: 70;"//                + "shadowHOff: 1;"//                + "shadowVOff: 1;"
 //                + "hasText: true;"
 //                + "qText:" + projects[i].split("/").reverse()[1] + ";"
 //                //+ "qImage:" + templateIcon + ";"

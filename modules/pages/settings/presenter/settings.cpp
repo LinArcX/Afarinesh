@@ -196,12 +196,3 @@ int Settings::fontSizeIndex()
     QVariant qv(fontSizeIndex);
     return fontSizes().indexOf(qv);
 }
-
-int Settings::loadBlockSize()
-{
-    QSettings settings(COMPANY_NAME, APP_NAME);
-    settings.beginGroup(APP_GROUP);
-    QString bs = settings.value(BLOCK_SIZE, 5).toString();
-    settings.endGroup();
-    emit blockSizeReady(bs);
-}

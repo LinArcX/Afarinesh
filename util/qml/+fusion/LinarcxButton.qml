@@ -1,7 +1,9 @@
 import QtQuick 2.12
+import QtQuick.Templates 2.12 as T
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick.Controls.Fusion 2.12
+import QtQuick.Controls.Fusion.impl 2.12
 
 T.Button {
     id: control
@@ -24,15 +26,11 @@ T.Button {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
-    padding: 6
-    horizontalPadding: padding + 2
+    padding: 4
     spacing: 6
 
-    icon.width: 24
-    icon.height: 24
-    icon.color: control.checked
-                || control.highlighted ? control.palette.brightText : control.flat
-                                         && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
+    icon.width: 16
+    icon.height: 16
 
     contentItem: IconLabel {
         spacing: control.spacing
@@ -42,9 +40,8 @@ T.Button {
         width: parent.width
         height: parent.height
         anchors.verticalCenter: parent.verticalCenter
-        color: control.checked
-               || control.highlighted ? control.palette.brightText : control.flat
-                                        && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
+        color: control.palette.buttonText
+
         Text {
             id: mText
             clip: true
@@ -89,7 +86,6 @@ T.Button {
             color: btnIconColor ? btnIconColor : "white"
 
             Component.onCompleted: {
-
                 if (btnIconPos == 0) {
                     // Left
                     anchors.left = parent.left
@@ -106,7 +102,7 @@ T.Button {
                     anchors.rightMargin = 5
                     anchors.verticalCenter = parent.verticalCenter
                 } else if (btnIconPos == 3) {
-                    // Right of Icon
+                     // Right of Icon
                     anchors.left = mText.right
                     anchors.leftMargin = 5
                     anchors.verticalCenter = parent.verticalCenter
@@ -119,17 +115,11 @@ T.Button {
         }
     }
 
-    background: Rectangle {
-        implicitWidth: 100
-        implicitHeight: 40
-        visible: !control.flat || control.down || control.checked
-                 || control.highlighted
-        color: Color.blend(
-                   control.checked
-                   || control.highlighted ? control.palette.dark : control.palette.button,
-                                            control.palette.mid,
-                                            control.down ? 0.5 : 0.0)
-        border.color: control.palette.highlight
-        border.width: control.visualFocus ? 2 : 0
+    background: ButtonPanel {
+        implicitWidth: 80
+        implicitHeight: 24
+
+        control: control
+        visible: !control.flat || control.down || control.checked || control.highlighted || control.visualFocus || control.hovered
     }
 }

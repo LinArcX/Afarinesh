@@ -1,7 +1,8 @@
 import QtQuick 2.12
+import QtQuick.Templates 2.12 as T
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick.Controls.Universal 2.12
 
 T.Button {
     id: control
@@ -24,15 +25,15 @@ T.Button {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
-    padding: 6
-    horizontalPadding: padding + 2
-    spacing: 6
+    padding: 8
+    verticalPadding: padding - 4
+    spacing: 8
 
-    icon.width: 24
-    icon.height: 24
-    icon.color: control.checked
-                || control.highlighted ? control.palette.brightText : control.flat
-                                         && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
+    icon.width: 20
+    icon.height: 20
+    icon.color: Color.transparent(Universal.foreground, enabled ? 1.0 : 0.2)
+
+    property bool useSystemFocusVisuals: true
 
     contentItem: IconLabel {
         spacing: control.spacing
@@ -42,9 +43,9 @@ T.Button {
         width: parent.width
         height: parent.height
         anchors.verticalCenter: parent.verticalCenter
-        color: control.checked
-               || control.highlighted ? control.palette.brightText : control.flat
-                                        && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
+        color: Color.transparent(control.Universal.foreground,
+                                 enabled ? 1.0 : 0.2)
+
         Text {
             id: mText
             clip: true
@@ -89,7 +90,6 @@ T.Button {
             color: btnIconColor ? btnIconColor : "white"
 
             Component.onCompleted: {
-
                 if (btnIconPos == 0) {
                     // Left
                     anchors.left = parent.left
@@ -120,16 +120,22 @@ T.Button {
     }
 
     background: Rectangle {
-        implicitWidth: 100
-        implicitHeight: 40
+        implicitWidth: 32
+        implicitHeight: 32
+
         visible: !control.flat || control.down || control.checked
                  || control.highlighted
-        color: Color.blend(
-                   control.checked
-                   || control.highlighted ? control.palette.dark : control.palette.button,
-                                            control.palette.mid,
-                                            control.down ? 0.5 : 0.0)
-        border.color: control.palette.highlight
-        border.width: control.visualFocus ? 2 : 0
+        color: control.down ? control.Universal.baseMediumLowColor : control.enabled
+                              && (control.highlighted
+                                  || control.checked) ? control.Universal.accent : control.Universal.baseLowColor
+
+        Rectangle {
+            width: parent.width
+            height: parent.height
+            color: "transparent"
+            visible: control.hovered
+            border.width: 2 // ButtonBorderThemeThickness
+            border.color: control.Universal.baseMediumLowColor
+        }
     }
 }

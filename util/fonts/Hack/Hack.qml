@@ -8,6 +8,8 @@ QtObject {
     readonly property string nf_dev_appstore: "\ue713"
     readonly property string nf_dev_sizzlejs: "\ue788"
     readonly property string nf_fa_rocket: "\uf135"
+    readonly property string nf_fa_save: "\uf0c7"
+    readonly property string nf_midi_history: "\uf7d9"
     readonly property string nf_mdi_home_outline: "\ufb9f"
     readonly property string nf_oct_home: "\uf46d"
     readonly property string nf_mdi_select: "\uf984"

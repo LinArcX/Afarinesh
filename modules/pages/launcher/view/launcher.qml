@@ -26,6 +26,12 @@ Window {
         id: messages
     }
 
+    LinarcxToolTip {
+        id: qToolTip
+        mother: window
+        z: 900
+    }
+
     FileDialog {
         id: qFileDialog
         title: "Choose Template Directory"
@@ -84,7 +90,6 @@ Window {
                     LinarcxImageToolTiper {
                         id: qCreateIso
                         qImg: icon
-                        qTitle: name
                         sourceSize.height: 40
                         sourceSize.width: 40
                         anchors.top: parent.top
@@ -98,10 +103,11 @@ Window {
                                                 "templateName": name,
                                                 "templateIcon": icon,
                                                 "templateAuthor": author,
-                                                "templateComment": comment,
+                                                "templateComment": comment
                                             })
                             qListView.currentIndex = index
                         }
+                        onImageEntered: function() { qToolTip.showMe(qCreateIso.x, qCreateIso.y, 2, name); console.log(y)}
                     }
                 }
             }
@@ -110,7 +116,6 @@ Window {
         LinarcxImageToolTiper {
             id: qAdd
             qImg: "qrc:/images/add-file.svg"
-            qTitle: "Add new template"
             sourceSize.height: 40
             sourceSize.width: 40
             anchors.bottom: qSettings.top
@@ -118,12 +123,12 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 5
             onImageClicked: qFileDialog.open()
+            onImageEntered: qToolTip.showMe(x, y, 2, "Add new template")
         }
 
         LinarcxImageToolTiper {
             id: qSettings
             qImg: "qrc:/images/settings.svg"
-            qTitle: "Settings"
             sourceSize.height: 40
             sourceSize.width: 40
             anchors.bottom: parent.bottom
@@ -131,6 +136,7 @@ Window {
             anchors.left: parent.left
             anchors.leftMargin: 5
             onImageClicked: qStackView.push("qrc:/pages/Settings.qml")
+            onImageEntered: qToolTip.showMe(x, y, 2, "Settings")
         }
     }
 
@@ -194,6 +200,27 @@ Window {
     }
 }
 
+//    onXChanged: {
+//        console.log("X changed!")
+//        qToolTip.showMe(x, y, "HI")
+////        if (x % 2 == 0) {
+////            console.log("x%2")
+////            qToolTip.mX = x
+////            qToolTip.mY = y
+////            qToolTip.visible = true
+////        } else {
+////            qToolTip.visible = false
+////        }
+//    }
+
+
+    //    Button{
+    //        anchors.centerIn: parnet
+    //        z:542
+    //        width: 60
+    //        height: 80
+    //        onClicked:
+    //    }
 
 //    Button{//        anchors.left: qMenu.right//        text: "lift"//        anchors.verticalCenter: qMenu.verticalCenter
 //        onClicked: {

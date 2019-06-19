@@ -4,59 +4,24 @@ import QtQuick.Dialogs 1.2
 
 import SettingsClass 1.0
 
-import "qrc:/components/qml"
-import "qrc:/js/ElementCreator.js" as JS
+import "qrc:/components/qml/"
+
+import "qrc:/js/Constants.js" as CONS
 import "qrc:/js/CoreStrings.js" as CStr
+import "qrc:/js/ElementCreator.js" as JS
 import "qrc:/js/SettingsStrings.js" as Str
+
+import "qrc:/fonts/hack/"
+import "qrc:/fonts/fontAwesome/"
 
 Page {
     id: mSettingsContent
-    width: window.width
-    height: window.height
 
     property variant mySettings: ({
 
                                   })
     SettingsClass {
         id: mSettings
-    }
-
-    Button {
-        id: btnSave
-        text: CStr.save
-        width: parent.width / 2 - 10
-        height: 35
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: 5
-        anchors.bottomMargin: 5
-        anchors.left: parent.left
-        onClicked: {
-            mySettings.fontFamily = cbFontFamily.currentText
-            mySettings.fontSize = cbFontSize.currentText
-            mySettings.style = cbStyle.currentText
-            mySettings.blockSize = sldBlockSize.value
-            mSettings.setSettings(mySettings)
-
-            var mDialog = mDialogChangeSettings.createObject(mSettingsContent)
-            mDialog.open()
-        }
-    }
-
-    Button {
-        id: btnDefaults
-        text: CStr.defaults
-        width: parent.width / 2 - 10
-        height: 35
-        anchors.bottom: parent.bottom
-        anchors.rightMargin: 5
-        anchors.bottomMargin: 5
-        anchors.left: btnSave.right
-        anchors.leftMargin: 5
-
-        onClicked: {
-            var mDialog = mDialogResetSettings.createObject(mSettingsContent)
-            mDialog.open()
-        }
     }
 
     ScrollView {
@@ -67,51 +32,46 @@ Page {
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
 
-        LinArcXHLine {
+        LinArcxHLine {
             id: paletteHeader
-            header: "Style"
             anchors.top: parent.top
             anchors.topMargin: 20
+            width: parent.width
+            lineWidth: parent.width - 30
+            header: "Style"
             imgPath: CStr.imgPalette
-            width: parent.width / 2 - 40
-            lineWidth: parent.width / 2 - 40
         }
 
         ComboBox {
             id: cbStyle
-            width: parent.width / 2 - 40
-            anchors.margins: 5
+            width: parent.width / 6
             anchors.top: paletteHeader.bottom
             anchors.topMargin: 5
             anchors.left: parent.left
-            z: -1
+            anchors.leftMargin: 10
             Component.onCompleted: {
                 JS.createCombo(mSettings.appStyles(),
                                mSettings.appStyleIndex(), svSettings, cbStyle)
             }
         }
 
-        LinArcXHLine {
+        LinArcxHLine {
             id: fontFamilyHeader
-            header: "Font Family"
-            width: parent.width / 2 - 40
-            lineWidth: parent.width / 2 - 40
-            anchors.top: parent.top
+            anchors.top: cbStyle.bottom
             anchors.topMargin: 20
-            anchors.left: paletteHeader.right
-            anchors.leftMargin: 10
+            width: parent.width
+            lineWidth: parent.width - 30
+            header: "Font Family"
             imgPath: CStr.imgText
         }
 
         ComboBox {
             id: cbFontFamily
-            anchors.margins: 5
-            width: parent.width / 2 - 40
-            anchors.left: fontFamilyHeader.left
+            width: parent.width / 6
             anchors.top: fontFamilyHeader.bottom
             anchors.topMargin: 5
+            anchors.left: fontFamilyHeader.left
             anchors.leftMargin: 10
-            z: -1
             Component.onCompleted: {
                 JS.createCombo(mSettings.fontFamilies(),
                                mSettings.fontFamilyIndex(), svSettings,
@@ -119,66 +79,71 @@ Page {
             }
         }
 
-        LinArcXHLine {
+        LinArcxHLine {
             id: fontSizeHeader
-            header: "Font Size"
-            anchors.top: cbStyle.bottom
+            anchors.top: cbFontFamily.bottom
             anchors.topMargin: 20
+            width: parent.width
+            lineWidth: parent.width - 30
+            header: "Font Size"
             imgPath: CStr.imgFontSize
-            width: parent.width / 2 - 40
-            lineWidth: parent.width / 2 - 40
         }
 
         ComboBox {
             id: cbFontSize
-            width: parent.width / 2 - 40
-            anchors.margins: 5
-            anchors.left: parent.left
+            width: parent.width / 6
             anchors.top: fontSizeHeader.bottom
             anchors.topMargin: 5
-            z: -1
+            anchors.left: parent.left
+            anchors.leftMargin: 10
             Component.onCompleted: {
                 JS.createCombo(mSettings.fontSizes(),
                                mSettings.fontSizeIndex(), svSettings,
                                cbFontSize)
             }
         }
+    }
 
-        LinArcXHLine {
-            id: bsHeader
-            header: "Block Size"
-            anchors.top: cbFontFamily.bottom
-            anchors.topMargin: 20
-            anchors.left: fontFamilyHeader.left
-            imgPath: CStr.imgBlockSize
-            width: parent.width / 2 - 40
-            lineWidth: parent.width / 2 - 40
+    LinarcxButton {
+        id: btnSave
+        height: 40
+        width: parent.width / 2
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+
+        btnText: CStr.save
+        btnIcon: Hack.nf_fa_save
+        btnIconSize: 20
+        btnIconColor: CONS.green500
+        btnIconFamily: Hack.family
+
+        onClicked: {
+            mySettings.fontFamily = cbFontFamily.currentText
+            mySettings.fontSize = cbFontSize.currentText
+            mySettings.style = cbStyle.currentText
+            mSettings.setSettings(mySettings)
+
+            var mDialog = mDialogChangeSettings.createObject(mSettingsContent)
+            mDialog.open()
         }
+    }
 
-        Slider {
-            id: sldBlockSize
-            from: 1
-            to: 100
-            value: 10
-            stepSize: 1
-            width: parent.width / 2 - 40
-            anchors.leftMargin: 10
-            anchors.left: bsHeader.left
-            anchors.top: bsHeader.bottom
-            anchors.topMargin: 5
-            onXChanged: lblCurrentBlockSize.x = sldBlockSize.visualPosition
-                        * sldBlockSize.width + sldBlockSize.x
-            onMoved: {
-                lblCurrentBlockSize.text = sldBlockSize.value
-                lblCurrentBlockSize.x = sldBlockSize.visualPosition
-                        * sldBlockSize.width + sldBlockSize.x
-            }
-        }
+    LinarcxButton {
+        id: btnDefaults
+        height: 40
+        width: parent.width / 2
+        anchors.left: btnSave.right
+        anchors.bottom: parent.bottom
 
-        Text {
-            id: lblCurrentBlockSize
-            anchors.top: sldBlockSize.bottom
-            anchors.topMargin: 5
+        btnText: CStr.defaults
+        btnIcon: Hack.nf_midi_history
+        btnIconFamily: Hack.family
+        btnIconSize: 30
+        btnIconColor: CONS.deppOrang500
+
+        onClicked: {
+            var mDialog = mDialogResetSettings.createObject(mSettingsContent)
+            mDialog.open()
         }
     }
 
@@ -222,19 +187,6 @@ Page {
                 width: parent.width
                 height: parent.height
             }
-        }
-    }
-
-    Component.onCompleted: {
-        mSettings.loadBlockSize()
-        //        pageSettingsCompleted(mSettingsContent.height)
-        lblCurrentBlockSize.text = sldBlockSize.value
-    }
-
-    Connections {
-        target: mSettings
-        onBlockSizeReady: {
-            sldBlockSize.value = blockSize
         }
     }
 }
