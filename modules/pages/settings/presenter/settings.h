@@ -1,6 +1,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <QGuiApplication>
 #include <QObject>
 #include <QString>
 #include <QVariantList>
@@ -21,6 +22,7 @@ public:
     static void loadAppStyle();
     void loadFontFamily();
     static void loadFontSize();
+    bool loadLanguage(QGuiApplication& app, QTranslator& appTranslator, QTranslator& qtTranslator);
 
     QString appStyleName();
     Q_INVOKABLE QVariantList appStyles();

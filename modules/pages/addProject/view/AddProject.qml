@@ -11,9 +11,14 @@ import "qrc:/js/Constants.js" as CONS
 Rectangle {
     id: appPane
     color: "white"
+
     property var targetPath
     property int tableItems
     property int counter: 1
+    property var templateName
+    property var templateIcon
+    property var templateAuthor
+    property var templateComment
 
     property bool isTableValid: false
     property int filledTableItems: 0
@@ -24,12 +29,6 @@ Rectangle {
     property var tableIDs: ({
 
                             })
-
-    property var templateName
-    property var templateIcon
-    property var templateAuthor
-    property var templateComment
-
     AddProjectClass {
         id: qAPC
     }
@@ -61,9 +60,9 @@ Rectangle {
     LinarcxNotif {
         id: qNotif
         qIcon: "qrc:/images/confetti.svg"
-        qText: "Project Generated!"
+        qText: qsTr("Project Generated!")
         qColor: CONS.blue
-        position: 1
+        qPosition: 1
     }
 
     Connections {
@@ -103,44 +102,93 @@ Rectangle {
             anchors.top: parent.top
         }
 
-        Column {
-            spacing: 10
+        Rectangle {
             anchors.verticalCenter: qTemplateIcon.verticalCenter
             anchors.left: qTemplateIcon.right
             anchors.leftMargin: 10
             anchors.top: qTemplateIcon.top
             width: qInfo.width - qTemplateIcon.width
-
             Text {
                 id: qProjectName
-                text: "Template Name: " + templateName
+                text: qsTr("Template Name")
                 font.pixelSize: 15
+                anchors.left: parent.left
+                anchors.top: parent.top
+            }
+
+            Text {
+                id: qProjectNameArrow
+                text: " : "
+                font.pixelSize: 15
+                anchors.left: qProjectName.right
+            }
+
+            Text {
+                text: templateName
+                font.pixelSize: 15
+                anchors.left: qProjectNameArrow.right
             }
 
             Text {
                 id: qProjectAuthor
-                text: "Author: " + templateAuthor
+                text: qsTr("Author")
                 font.pixelSize: 15
+                anchors.top: qProjectName.bottom
+                anchors.topMargin: 5
+                anchors.left: parent.left
+            }
+
+            Text {
+                id: qProjectAuthorArrow
+                text: " : "
+                font.pixelSize: 15
+                anchors.left: qProjectAuthor.right
+                anchors.bottom: qProjectAuthor.bottom
+            }
+
+            Text {
+                text: templateAuthor
+                font.pixelSize: 15
+                anchors.left: qProjectAuthorArrow.right
+                anchors.bottom: qProjectAuthor.bottom
             }
 
             Text {
                 id: qProjectComment
-                text: "Comment: " + templateComment
+                text: qsTr("Comment")
                 font.pixelSize: 15
+                anchors.top: qProjectAuthor.bottom
+                anchors.topMargin: 5
+                anchors.left: parent.left
+            }
+
+            Text {
+                id: qProjectCommentArrow
+                text: " : "
+                font.pixelSize: 15
+                anchors.left: qProjectComment.right
+                anchors.bottom: qProjectComment.bottom
+            }
+
+            Text {
+                text: templateComment
+                font.pixelSize: 15
+                anchors.left: qProjectCommentArrow.right
+                anchors.bottom: qProjectCommentArrow.bottom
             }
         }
     }
 
     LinArcxHLine {
         id: chooseProjectName
-        header: "1. Name of the project"
+        header: qsTr("1. Name of the project")
         anchors.top: qInfo.bottom
         anchors.topMargin: 10
     }
 
     LinarcxTextField {
         id: txtProjectName
-        placeholderText: "Enter Project Name..."
+        placeholderText: qsTr("Enter Project Name...")
         anchors.top: chooseProjectName.bottom
         anchors.topMargin: 10
         anchors.left: parent.left
@@ -157,7 +205,7 @@ Rectangle {
 
     LinArcxHLine {
         id: chooseProjectPath
-        header: "2. Choose path"
+        header: qsTr("2. Choose path")
         anchors.top: txtProjectName.bottom
         anchors.topMargin: 20
     }
@@ -170,7 +218,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
 
-        btnText: 'Choose target path'
+        btnText: qsTr("Choose target path")
         btnIcon: Hack.nf_mdi_select
         btnIconSize: 30
         btnIconColor: CONS.orange400
@@ -236,7 +284,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
 
-        btnText: "Generate"
+        btnText: qsTr("Generate")
         btnIcon: Hack.nf_fa_rocket
         btnIconSize: 30
         btnIconColor: CONS.green500
@@ -262,7 +310,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: btnGenerate.right
 
-        btnText: "Back"
+        btnText: qsTr("Back")
         btnIcon: Hack.nf_mdi_arrow_left_box
         btnIconSize: 30
         btnIconColor: CONS.deppOrang500
@@ -278,7 +326,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: btnGoBack.right
 
-        btnText: "Home"
+        btnText: qsTr("Home")
         btnIcon: Hack.nf_oct_home
         btnIconSize: 30
         btnIconColor: CONS.indigo500

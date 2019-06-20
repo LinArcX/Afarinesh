@@ -12,8 +12,13 @@ class Dispatcher : public QObject {
     Q_OBJECT
 
 public:
-    Dispatcher(QGuiApplication&, QObject* parent = nullptr);
+    Dispatcher(QGuiApplication&, bool& isRTL, QObject* parent = nullptr);
     Dispatcher(QObject* parent = nullptr);
+
+    void registerTypes();
+    void execRunTimeQML();
+
+    Q_INVOKABLE void clearCache();
 
     static Dispatcher* getInstance()
     {
@@ -40,9 +45,12 @@ public:
         return context;
     }
 
-    void registerTypes();
-
 private:
+    QQmlApplicationEngine* mEngine;
+    QQmlContext* mContext;
+
+signals:
+    void cacheCleared();
 };
 
 #endif // DISPATCHER_H

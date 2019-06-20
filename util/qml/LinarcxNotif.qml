@@ -13,19 +13,23 @@ Rectangle {
     property string qIcon
     property string qText
     property string qColor
-    property int position: 0
+    property int qPosition: 0
 
-    signal notificaitonTurnOn
+    signal notificaitonTurnOn(var icon, var text, var color, var position)
 
     onNotificaitonTurnOn: {
         mNotif.visible = true
         seqAnimation.start()
+        qIcon = icon
+        qText = text
+        qColor = color
+        qPosition = position
     }
 
     Component.onCompleted: {
         mNotif.width = mTitle.width + mIcon.width + 40
         mNotif.height = 50
-        if (position == 0) {
+        if (qPosition == 0) {
             minX = -mNotif.width
             maxX = -20
 
@@ -37,7 +41,7 @@ Rectangle {
 
             mIcon.anchors.right = mNotif.right
             mIcon.anchors.rightMargin = 5
-        } else if (position == 1) {
+        } else if (qPosition == 1) {
             minX = parent.width
             maxX = parent.width - mNotif.width + 20
 
@@ -49,7 +53,7 @@ Rectangle {
 
             mIcon.anchors.left = mNotif.left
             mIcon.anchors.leftMargin = 5
-        } else if (position == 2) {
+        } else if (qPosition == 2) {
             minX = -mNotif.width
             maxX = -20
 
@@ -61,7 +65,7 @@ Rectangle {
 
             mIcon.anchors.right = mNotif.right
             mIcon.anchors.rightMargin = 5
-        } else if (position == 3) {
+        } else if (qPosition == 3) {
             minX = parent.width
             maxX = parent.width - mNotif.width + 20
 

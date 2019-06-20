@@ -1,6 +1,13 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.3
 
+import "qrc:/components/qml/"
+
+import "qrc:/js/Constants.js" as CONS
+
+import "qrc:/fonts/hack/"
+import "qrc:/fonts/fontAwesome/"
+
 Rectangle {
     id: qInitPage
 
@@ -15,7 +22,7 @@ Rectangle {
 
     Button {
         id: qButton
-        text: "Open New Template"
+        text: qsTr("Open New Template")
         onClicked: window.mDialog.open()
         anchors.top: qImage.bottom
         anchors.topMargin: 10

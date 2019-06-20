@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QString>
 #include <QStringList>
+#include <QTranslator>
 #include <sys/utsname.h>
 
 #include "modules/core/dispatcher/dispatcher.h"
@@ -44,11 +45,17 @@ void Settings::setSettings(QVariantMap mSettings)
             settings.setValue(STYLE, appStyle);
             settings.endGroup();
             loadAppStyle();
-        } else if (mKey == BLOCK_SIZE) {
-            QString blockSize = iter.value().toString();
+        } else if (mKey == CURRENT_LANGUAGE) {
+            QString appLanguage = iter.value().toString();
+            QString finalAppLanguage;
+            if (appLanguage == "English") {
+                finalAppLanguage = "EN";
+            } else if (appLanguage == "Persian") {
+                finalAppLanguage = "FA";
+            }
             QSettings settings(COMPANY_NAME, APP_NAME);
             settings.beginGroup(APP_GROUP);
-            settings.setValue(BLOCK_SIZE, blockSize);
+            settings.setValue(CURRENT_LANGUAGE, finalAppLanguage);
             settings.endGroup();
             loadAppStyle();
         }
@@ -96,6 +103,26 @@ void Settings::loadFontSize()
     mFont.setPixelSize(qvariant_cast<int>(settings.value(FONT_SIZE, 12)));
     QGuiApplication::setFont(mFont);
     settings.endGroup();
+}
+
+bool Settings::loadLanguage(QGuiApplication& app, QTranslator& appTranslator, QTranslator& qtTranslator)
+{
+    bool isRTL = false;
+    QSettings settings(COMPANY_NAME, APP_NAME);
+    settings.beginGroup(APP_GROUP);
+    QString appLanguage = qvariant_cast<QString>(settings.value(CURRENT_LANGUAGE, "FA"));
+    settings.endGroup();
+    if (appLanguage == "FA") {
+        isRTL = true;
+        appTranslator.load(":/translations/persian.qm");
+        app.installTranslator(&appTranslator);
+
+        qtTranslator.load(":/translations/qt_fa.qm");
+        app.installTranslator(&qtTranslator);
+
+        app.setLayoutDirection(Qt::LeftToRight);
+    }
+    return isRTL;
 }
 
 QString Settings::appStyleName()

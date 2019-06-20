@@ -9,6 +9,7 @@ import "qrc:/js/Constants.js" as CONS
 
 Rectangle {
     id: qViewListProjects
+
     property var templateIcon
     property var templateName
     property var templateAuthor
@@ -16,6 +17,7 @@ Rectangle {
 
     property string addFeature: "qrc:/pages/AddFeature.qml"
     property string addProject: "qrc:/pages/AddProject.qml"
+
 
     ListProjectsClass {
         id: qListProjects
@@ -25,12 +27,12 @@ Rectangle {
     LinarcxPopUp {
         id: mPopUp
         mImage: "qrc:/images/warning.svg"
-        mTitle: "Are you Sure?"
+        mTitle: qsTr("Are you Sure?")
         mBody: Rectangle {
             anchors.fill: parent
             Button {
                 id: qYes
-                text: "Yes"
+                text: qsTr("Yes")
                 anchors.top: parent.top
                 anchors.topMargin: 10
                 anchors.right: parent.right
@@ -44,7 +46,7 @@ Rectangle {
             }
 
             Button {
-                text: "No"
+                text: qsTr("No")
                 anchors.top: qYes.top
                 anchors.right: qYes.left
                 anchors.rightMargin: 10
@@ -78,37 +80,86 @@ Rectangle {
             anchors.top: parent.top
         }
 
-        Column {
-            spacing: 10
+        Rectangle {
             anchors.verticalCenter: qTemplateIcon.verticalCenter
             anchors.left: qTemplateIcon.right
             anchors.leftMargin: 10
             anchors.top: qTemplateIcon.top
             width: qInfo.width - qTemplateIcon.width
-
             Text {
                 id: qProjectName
-                text: "Template Name: " + templateName
+                text: qsTr("Template Name")
                 font.pixelSize: 15
+                anchors.left: parent.left
+                anchors.top: parent.top
+            }
+
+            Text {
+                id: qProjectNameArrow
+                text: " : "
+                font.pixelSize: 15
+                anchors.left: qProjectName.right
+            }
+
+            Text {
+                text: templateName
+                font.pixelSize: 15
+                anchors.left: qProjectNameArrow.right
             }
 
             Text {
                 id: qProjectAuthor
-                text: "Author: " + templateAuthor
+                text: qsTr("Author")
                 font.pixelSize: 15
+                anchors.top: qProjectName.bottom
+                anchors.topMargin: 5
+                anchors.left: parent.left
+            }
+
+            Text {
+                id: qProjectAuthorArrow
+                text: " : "
+                font.pixelSize: 15
+                anchors.left: qProjectAuthor.right
+                anchors.bottom: qProjectAuthor.bottom
+            }
+
+            Text {
+                text: templateAuthor
+                font.pixelSize: 15
+                anchors.left: qProjectAuthorArrow.right
+                anchors.bottom: qProjectAuthor.bottom
             }
 
             Text {
                 id: qProjectComment
-                text: "Comment: " + templateComment
+                text: qsTr("Comment")
                 font.pixelSize: 15
+                anchors.top: qProjectAuthor.bottom
+                anchors.topMargin: 5
+                anchors.left: parent.left
+            }
+
+            Text {
+                id: qProjectCommentArrow
+                text: " : "
+                font.pixelSize: 15
+                anchors.left: qProjectComment.right
+                anchors.bottom: qProjectComment.bottom
+            }
+
+            Text {
+                text: templateComment
+                font.pixelSize: 15
+                anchors.left: qProjectCommentArrow.right
+                anchors.bottom: qProjectCommentArrow.bottom
             }
         }
     }
 
     LinArcxHLine {
         id: listOfAllProjects
-        header: "List of all projects"
+        header: qsTr("List of all projects")
         anchors.top: qInfo.bottom
         anchors.topMargin: 10
     }
@@ -131,7 +182,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
 
-        btnText: "Create New " + templateName + " Project"
+        btnText: qsTr("Create New Project")
         btnIcon: Hack.nf_dev_sizzlejs
         btnIconSize: 30
         btnIconColor: CONS.green500
@@ -152,7 +203,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: btnNewProject.right
 
-        btnText: "Delete Template"
+        btnText: qsTr("Delete Template")
         btnIcon: Hack.nf_mdi_delete_forever
         btnIconSize: 25
         btnIconColor: CONS.red500
@@ -169,7 +220,7 @@ Rectangle {
         anchors.right: parent.right
         anchors.left: btnDeleteTemplate.right
 
-        btnText: "Home"
+        btnText: qsTr("Home")
         btnIcon: Hack.nf_oct_home
         btnIconSize: 30
         btnIconColor: CONS.indigo500
@@ -210,11 +261,7 @@ Rectangle {
         qListProjects.getAllProjects(templateName)
     }
 }
-
-//Qt.createQmlObject(//        "import QtQuick.Controls 2.5; "//        + "import \"qrc:/components/qml/\";"//            + "LinarcxCardView {"//                + "width: parent.width / 4;"//                + "height: 70;"//                + "shadowHOff: 1;"//                + "shadowVOff: 1;"
-//                + "hasText: true;"
-//                + "qText:" + projects[i].split("/").reverse()[1] + ";"
-//                //+ "qImage:" + templateIcon + ";"
+//Qt.createQmlObject(//        "import QtQuick.Controls 2.5; "//        + "import \"qrc:/components/qml/\";"//            + "LinarcxCardView {"//                + "width: parent.width / 4;"//                + "height: 70;"//                + "shadowHOff: 1;"//                + "shadowVOff: 1;"//                + "hasText: true;"//                + "qText:" + projects[i].split("/").reverse()[1] + ";"//                //+ "qImage:" + templateIcon + ";"
 //                + "onCardViewClicked: " + function () { console.log("hi"); } + ";"
 //        + "}", qGrid)
 
@@ -228,3 +275,5 @@ Rectangle {
 //        qImage: templateIcon
 //        qText: templateName
 //    }
+
+//    property bool mirror: Qt.application.layoutDirection == Qt.RightToLeft

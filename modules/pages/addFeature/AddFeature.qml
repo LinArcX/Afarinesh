@@ -21,7 +21,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
 
-        btnText: 'Generate'
+        btnText: qsTr('Generate')
         btnIcon: Hack.nf_fa_rocket
         btnIconSize: 30
         btnIconColor: CONS.green500
@@ -35,7 +35,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: btnGenerate.right
 
-        btnText: 'Back'
+        btnText: qsTr('Back')
         btnIcon: Hack.nf_mdi_arrow_left_box
         btnIconSize: 30
         btnIconColor: CONS.deppOrang500
@@ -51,7 +51,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: btnGoBack.right
 
-        btnText: 'Home'
+        btnText: qsTr('Home')
         btnIcon: Hack.nf_oct_home
         btnIconSize: 30
         btnIconColor: CONS.indigo500

@@ -7,6 +7,9 @@
 #define STYLE "style"
 #define OS "os"
 
+#define LANGUAGE_GROUP "Language"
+#define CURRENT_LANGUAGE "currentLanguage"
+
 #define DEFAULT_FONT "Aller"
 #define DEFAULT_STYLE "Imagine"
 

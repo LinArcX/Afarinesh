@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
+        <file>main.qml</file>
     </qresource>
     <qresource prefix="/pages">
-        <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
         <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
         <file alias="ListProjects.qml">modules/pages/listProjects/view/ListPorjects.qml</file>
         <file alias="AddProject.qml">modules/pages/addProject/view/AddProject.qml</file>
@@ -28,8 +28,7 @@
         <file alias="qml/+imagine/Theme.qml">util/qml/+imagine/Theme.qml</file>
         <file alias="qml/+material/LinarcxButton.qml">util/qml/+material/LinarcxButton.qml</file>
         <file alias="qml/+universal/LinarcxButton.qml">util/qml/+universal/LinarcxButton.qml</file>
-        <file alias="qml/Theme.qml">util/qml/Theme.qml</file>
-        <file alias="qml/qmldir">util/qml/qmldir</file>
+        <file alias="qml/+fusion/LinarcxTextField.qml">util/qml/+fusion/LinarcxTextField.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="add-file.svg">util/images/add-file.svg</file>
@@ -41,7 +40,7 @@
         <file alias="text.svg">util/images/text.svg</file>
         <file alias="warning.svg">util/images/warning.svg</file>
     </qresource>
-    <qresource prefix="/fonts">       
+    <qresource prefix="/fonts">
         <file alias="Adele.ttf">util/fonts/Adele.ttf</file>
         <file alias="AlexBrush.ttf">util/fonts/AlexBrush.ttf</file>
         <file alias="Aller.ttf">util/fonts/Aller.ttf</file>
@@ -70,5 +69,10 @@
     </qresource>
     <qresource prefix="/sounds">
         <file alias="Done.wav">util/sounds/Done.wav</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file alias="persian.ts">translations/persian.ts</file>
+        <file alias="persian.qm">translations/persian.qm</file>
+        <file alias="qt_fa.qm">translations/qt_fa.qm</file>
     </qresource>
 </RCC>

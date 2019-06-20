@@ -1,15 +1,22 @@
 #include "modules/core/dispatcher/dispatcher.h"
+#include "modules/pages/settings/presenter/settings.h"
+
 #include <QGuiApplication>
+#include <QTranslator>
 
 int main(int argc, char* argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
+    QTranslator appTranslator;
+    QTranslator qtTranslator;
 
-    app.setOrganizationName("linarcx");
-    app.setOrganizationDomain("io.github.com");
-    app.setApplicationName("Trinity");
+    Settings settings;
+    settings.loadAppStyle();
+    settings.loadFontFamily();
+    settings.loadFontSize();
+    bool isRTL = settings.loadLanguage(app, appTranslator, qtTranslator);
 
-    Dispatcher dispatcher(app);
+    Dispatcher dispatcher(app, isRTL);
     return app.exec();
 }

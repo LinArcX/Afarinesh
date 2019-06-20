@@ -4,6 +4,7 @@
 #include <QVariant>
 #include <iostream>
 
+#include "modules/core/dispatcher/dispatcher.h"
 #include "modules/core/dispatcher/dispatcherMacro.h"
 #include "modules/pages/launcher/presenter/launcher.h"
 
@@ -23,6 +24,14 @@ void Launcher::getAllKeys()
 {
     QStringList keys = QtUtil::getAllKeys(ORGANIZATION, APPLICATION, TEMPLATES_GROUP);
     emit allKeysReady(keys);
+}
+
+void Launcher::clearCache()
+{
+    Dispatcher::getEngine()->trimComponentCache();
+    Dispatcher::getEngine()->clearComponentCache();
+    Dispatcher::getEngine()->trimComponentCache();
+    emit cacheCleared();
 }
 
 void Launcher::removeItem(QVariant key)

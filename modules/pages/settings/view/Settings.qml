@@ -20,8 +20,14 @@ Page {
     property variant mySettings: ({
 
                                   })
+
     SettingsClass {
         id: mSettings
+    }
+
+    Component.onCompleted: {
+        console.log(isRTL)
+        console.log(app)
     }
 
     ScrollView {
@@ -38,7 +44,7 @@ Page {
             anchors.topMargin: 20
             width: parent.width
             lineWidth: parent.width - 30
-            header: "Style"
+            header: qsTr("Style")
             imgPath: CStr.imgPalette
         }
 
@@ -61,7 +67,7 @@ Page {
             anchors.topMargin: 20
             width: parent.width
             lineWidth: parent.width - 30
-            header: "Font Family"
+            header: qsTr("Font Family")
             imgPath: CStr.imgText
         }
 
@@ -85,7 +91,7 @@ Page {
             anchors.topMargin: 20
             width: parent.width
             lineWidth: parent.width - 30
-            header: "Font Size"
+            header: qsTr("Font Size")
             imgPath: CStr.imgFontSize
         }
 
@@ -102,6 +108,26 @@ Page {
                                cbFontSize)
             }
         }
+
+        LinArcxHLine {
+            id: languagesHeader
+            anchors.top: cbFontSize.bottom
+            anchors.topMargin: 20
+            width: parent.width
+            lineWidth: parent.width - 30
+            header: qsTr("App's Language")
+            imgPath: CStr.imgPalette
+        }
+
+        ComboBox {
+            id: cbLanguages
+            width: parent.width / 6
+            anchors.top: languagesHeader.bottom
+            anchors.topMargin: 5
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            model: ["English", "Persian"]
+        }
     }
 
     LinarcxButton {
@@ -111,7 +137,7 @@ Page {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
 
-        btnText: CStr.save
+        btnText: qsTr("Save")
         btnIcon: Hack.nf_fa_save
         btnIconSize: 20
         btnIconColor: CONS.green500
@@ -121,6 +147,7 @@ Page {
             mySettings.fontFamily = cbFontFamily.currentText
             mySettings.fontSize = cbFontSize.currentText
             mySettings.style = cbStyle.currentText
+            mySettings.currentLanguage = cbLanguages.currentText
             mSettings.setSettings(mySettings)
 
             var mDialog = mDialogChangeSettings.createObject(mSettingsContent)
@@ -135,7 +162,7 @@ Page {
         anchors.left: btnSave.right
         anchors.bottom: parent.bottom
 
-        btnText: CStr.defaults
+        btnText: qsTr("Defaults")
         btnIcon: Hack.nf_midi_history
         btnIconFamily: Hack.family
         btnIconSize: 30
@@ -151,7 +178,7 @@ Page {
         id: mDialogChangeSettings
         Dialog {
             visible: true
-            title: "Choose a date"
+            title: qsTr("Choose a date")
             standardButtons: StandardButton.Yes | StandardButton.No | StandardButton.Cancel
 
             onYes: mSettings.restartApp()
@@ -159,7 +186,7 @@ Page {
             onRejected: console.log("reject")
 
             Text {
-                text: qsTr(Str.settingsDone)
+                text: qsTr("Your Preferences Done!\n to see changes, restart the app. RESTART NOW?")
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
@@ -171,7 +198,7 @@ Page {
         id: mDialogResetSettings
         Dialog {
             visible: true
-            title: "Reset Settings!"
+            title: qsTr("Reset Settings!")
             standardButtons: StandardButton.Yes | StandardButton.No | StandardButton.Cancel
 
             onYes: {
@@ -182,7 +209,7 @@ Page {
             onRejected: console.log("reject")
 
             Text {
-                text: qsTr(Str.settingsReset)
+                text: qsTr("Your settings will be gone!\n Are you agree?")
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
