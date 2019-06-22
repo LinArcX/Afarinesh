@@ -36,6 +36,12 @@ public:
     Q_INVOKABLE QVariantList fontSizes();
     Q_INVOKABLE int fontSizeIndex();
 
+    QString languagesName();
+    Q_INVOKABLE QVariantList languages();
+    Q_INVOKABLE int languageIndex();
+
+    Q_INVOKABLE bool isDark();
+
 private:
 signals:
     void blockSizeReady(QVariant blockSize);

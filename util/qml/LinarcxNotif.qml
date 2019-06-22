@@ -15,15 +15,15 @@ Rectangle {
     property string qColor
     property int qPosition: 0
 
-    signal notificaitonTurnOn(var icon, var text, var color, var position)
+    signal notificaitonTurnOn()
 
     onNotificaitonTurnOn: {
         mNotif.visible = true
         seqAnimation.start()
-        qIcon = icon
-        qText = text
-        qColor = color
-        qPosition = position
+//        qIcon = icon
+//        qText = text
+//        qColor = color
+//        qPosition = position
     }
 
     Component.onCompleted: {

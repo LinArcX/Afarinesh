@@ -1,14 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
-        <file>main.qml</file>
     </qresource>
     <qresource prefix="/pages">
-        <file alias="InitialPage.qml">modules/pages/initialPage/InitialPage.qml</file>
         <file alias="ListProjects.qml">modules/pages/listProjects/view/ListPorjects.qml</file>
         <file alias="AddProject.qml">modules/pages/addProject/view/AddProject.qml</file>
         <file alias="AddFeature.qml">modules/pages/addFeature/AddFeature.qml</file>
         <file alias="Settings.qml">modules/pages/settings/view/Settings.qml</file>
+        <file alias="ChooseNewTemplate.qml">modules/pages/chooseNewTemplate/ChooseNewTemplate.qml</file>
+        <file alias="launcher.qml">modules/pages/launcher/view/launcher.qml</file>
     </qresource>
     <qresource prefix="/components">
         <file alias="qml/LinarcxButton.qml">util/qml/LinarcxButton.qml</file>

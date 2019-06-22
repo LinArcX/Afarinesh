@@ -7,7 +7,7 @@ import "qrc:/fonts/hack/"
 import "qrc:/fonts/fontAwesome/"
 import "qrc:/js/Constants.js" as CONS
 
-Rectangle {
+Page {
     id: qViewListProjects
 
     property var templateIcon
@@ -59,10 +59,11 @@ Rectangle {
         target: qListProjects
         onProjectsReady: {
             addProjects(projects)
+            console.log(projects)
         }
     }
 
-    Rectangle {
+    Page {
         id: qInfo
         anchors.left: parent.left
         anchors.leftMargin: 10
@@ -80,7 +81,7 @@ Rectangle {
             anchors.top: parent.top
         }
 
-        Rectangle {
+        Page {
             anchors.verticalCenter: qTemplateIcon.verticalCenter
             anchors.left: qTemplateIcon.right
             anchors.leftMargin: 10
@@ -166,7 +167,7 @@ Rectangle {
 
     Grid {
         id: qGrid
-        columns: 8
+        columns: 6
         spacing: 10
         width: parent.width - 50
         height: parent.height
@@ -220,7 +221,7 @@ Rectangle {
         anchors.right: parent.right
         anchors.left: btnDeleteTemplate.right
 
-        btnText: qsTr("Home")
+        btnText: qsTr('Home')
         btnIcon: Hack.nf_oct_home
         btnIconSize: 30
         btnIconColor: CONS.indigo500
@@ -235,25 +236,19 @@ Rectangle {
 
     function addProjects(projects) {
         for (var i in projects) {
-            var component = Qt.createComponent(
-                        "qrc:/components/qml/LinarcxCardView.qml")
-            if (component.status === Component.Ready) {
-                var item = component.createObject(qGrid, {
-                                                      "width": qGrid.width / 8,
-                                                      "height": 90,
-                                                      "shadowHOff": 1,
-                                                      "shadowVOff": 1,
-                                                      "hasText": true,
-                                                      "qText": projects[i].split(
-                                                          "/").reverse()[1],
-                                                      "qImage": templateIcon
-                                                  })
-                item.onCardViewClicked.connect(function () {
-                    qStackView.push(addFeature, {
-                                        "name": "d"
-                                    })
-                })
-            }
+            var rowOne = Qt.createQmlObject(
+                        "import \"qrc:/components/qml/\";"
+                        + "LinarcxCardView {"
+                            + "width: qGrid.width / 6;"
+                            + "height: 90;"
+                            + "shadowHOff: 1;"
+                            + "shadowVOff: 1;"
+                            + "hasText: true;"
+                            + "qText:" + "\"" + projects[i].split("/").reverse()[1] + "\"" + ";"
+                            + "qImage:" + "\""  + templateIcon + "\"" + ";"
+                            + "onCardViewClicked: qStackView.push(addFeature, { \"projectPath\": " + "\"" + projects[i] + "\""  + " });"
+                        + "}",
+                   qGrid)
         }
     }
 
@@ -261,19 +256,25 @@ Rectangle {
         qListProjects.getAllProjects(templateName)
     }
 }
-//Qt.createQmlObject(//        "import QtQuick.Controls 2.5; "//        + "import \"qrc:/components/qml/\";"//            + "LinarcxCardView {"//                + "width: parent.width / 4;"//                + "height: 70;"//                + "shadowHOff: 1;"//                + "shadowVOff: 1;"//                + "hasText: true;"//                + "qText:" + projects[i].split("/").reverse()[1] + ";"//                //+ "qImage:" + templateIcon + ";"
-//                + "onCardViewClicked: " + function () { console.log("hi"); } + ";"
-//        + "}", qGrid)
 
-//    LinarcxCardView{
-//        width: 100
-//        height: 100
-//        anchors.centerIn: parent
-//        shadowHOff: 1
-//        shadowVOff: 1
-//        fixedText: true
-//        qImage: templateIcon
-//        qText: templateName
-//    }
-
-//    property bool mirror: Qt.application.layoutDirection == Qt.RightToLeft
+//            var component = Qt.createComponent(
+//                        "qrc:/components/qml/LinarcxCardView.qml")
+//            if (component.status === Component.Ready) {
+//                var item = component.createObject(qGrid, {
+//                                                      "id": "qCardView"+j,
+//                                                      "width": qGrid.width / 6,
+//                                                      "height": 90,
+//                                                      "shadowHOff": 1,
+//                                                      "shadowVOff": 1,
+//                                                      "hasText": true,
+//                                                      "qText": projects[i].split(
+//                                                          "/").reverse()[1],
+//                                                      "qImage": templateIcon
+//                                                  })
+//                item.onCardViewClicked.connect(function () {
+//                    console.log(item.qText)
+//                    qStackView.push(addFeature, {
+//                                        "projectPath": "qCardView"+j.qText
+//                                    })
+//                })
+//            }

@@ -47,17 +47,18 @@ void Settings::setSettings(QVariantMap mSettings)
             loadAppStyle();
         } else if (mKey == CURRENT_LANGUAGE) {
             QString appLanguage = iter.value().toString();
-            QString finalAppLanguage;
-            if (appLanguage == "English") {
-                finalAppLanguage = "EN";
-            } else if (appLanguage == "Persian") {
-                finalAppLanguage = "FA";
-            }
             QSettings settings(COMPANY_NAME, APP_NAME);
             settings.beginGroup(APP_GROUP);
-            settings.setValue(CURRENT_LANGUAGE, finalAppLanguage);
+            settings.setValue(CURRENT_LANGUAGE, appLanguage);
             settings.endGroup();
             loadAppStyle();
+        } else if (mKey == "darkMeterial") {
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", "Dark");
+        } else if (mKey == "darkUniversal") {
+            qputenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME", "Dark");
+        } else {
+            qunsetenv("QT_QUICK_CONTROLS_MATERIAL_THEME");
+            qunsetenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME");
         }
     }
 }
@@ -110,9 +111,9 @@ bool Settings::loadLanguage(QGuiApplication& app, QTranslator& appTranslator, QT
     bool isRTL = false;
     QSettings settings(COMPANY_NAME, APP_NAME);
     settings.beginGroup(APP_GROUP);
-    QString appLanguage = qvariant_cast<QString>(settings.value(CURRENT_LANGUAGE, "FA"));
+    QString appLanguage = qvariant_cast<QString>(settings.value(CURRENT_LANGUAGE, "EN"));
     settings.endGroup();
-    if (appLanguage == "FA") {
+    if (appLanguage == "Persian") {
         isRTL = true;
         appTranslator.load(":/translations/persian.qm");
         app.installTranslator(&appTranslator);
@@ -138,7 +139,6 @@ QVariantList Settings::appStyles()
 {
     QVariantList appStyles;
     appStyles
-        << "Default"
         << "Fusion"
         << "Imagine"
         << "Material"
@@ -222,4 +222,50 @@ int Settings::fontSizeIndex()
     QString fontSizeIndex = fontSizeName();
     QVariant qv(fontSizeIndex);
     return fontSizes().indexOf(qv);
+}
+
+QString Settings::languagesName()
+{
+    QSettings settings(COMPANY_NAME, APP_NAME);
+    settings.beginGroup(APP_GROUP);
+    QString language = qvariant_cast<QString>(settings.value(CURRENT_LANGUAGE, "Egnglish"));
+    settings.endGroup();
+    return language;
+}
+
+QVariantList Settings::languages()
+{
+    QVariantList fontLists;
+    fontLists
+        << "English"
+        << "Persian";
+
+    return fontLists;
+}
+
+int Settings::languageIndex()
+{
+    QString languageIndex = languagesName();
+    QVariant qv(languageIndex);
+    return languages().indexOf(qv);
+}
+
+bool Settings::isDark()
+{
+    bool isDark;
+    QString currentStyle = QQuickStyle::name();
+    if (currentStyle == "Universal") {
+        bool isUniversalDark = qEnvironmentVariableIsSet("QT_QUICK_CONTROLS_UNIVERSAL_THEME");
+        if (isUniversalDark)
+            isDark = true;
+        else
+            isDark = false;
+    } else if (currentStyle == "Material") {
+        bool isMaterialDark = qEnvironmentVariableIsSet("QT_QUICK_CONTROLS_MATERIAL_THEME");
+        if (isMaterialDark)
+            isDark = true;
+        else
+            isDark = false;
+    }
+    return isDark;
 }

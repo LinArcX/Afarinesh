@@ -3,37 +3,36 @@ import QtQuick.Window 2.11
 import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.0
 
-import LauncherClass 1.0
 import "qrc:/components/qml/"
 import "qrc:/pages/"
 import "qrc:/fonts/hack/"
 import "qrc:/js/Constants.js" as CONS
+import LauncherClass 1.0
 
 Window {
     id: window
     visible: true
-
-    property string path
-    property string listProjects: "qrc:/pages/ListProjects.qml"
-    property string initialPage: "qrc:/pages/InitialPage.qml"
-    property var templatesArray
-    property alias mDialog: qFileDialog
-
     LayoutMirroring.enabled: isRTL
     LayoutMirroring.childrenInherit: true
 
-    LauncherClass {
-        id: qLC
-    }
-
-    LinarcxNotif {
-        id: qNotif
-    }
+    property string listProjects: "qrc:/pages/ListProjects.qml"
+    property string path
 
     LinarcxToolTip {
         id: qToolTip
         mother: window
         z: 900
+    }
+
+    StackView {
+        id: qStackView
+        width: parent.width - 50
+        height: parent.height
+        anchors.right: parent.right
+    }
+
+    LauncherClass {
+        id: qLC
     }
 
     FileDialog {
@@ -45,13 +44,6 @@ Window {
             path = qFileDialog.folder
             qLC.hasConfig(qFileDialog.folder)
         }
-    }
-
-    StackView {
-        id: qStackView
-        width: parent.width - 50
-        height: parent.height
-        anchors.right: parent.right
     }
 
     Rectangle {
@@ -108,26 +100,15 @@ Window {
                                                 "templateIcon": icon,
                                                 "templateAuthor": author,
                                                 "templateComment": comment
-                                            }, StackView.Immediate)
+                                            })
                             qListView.currentIndex = index
                         }
                         onImageEntered: function () {
                             qToolTip.showMe(qCreateIso.x, qCreateIso.y, 2, name)
-                            console.log(y)
                         }
                     }
                 }
             }
-        }
-
-        Button {
-            text: "R"
-            width: 40
-            anchors.bottom: qAdd.top
-            anchors.bottomMargin: 10
-            anchors.left: parent.left
-            anchors.leftMargin: 5
-            onClicked: RuntimeQML.reload()
         }
 
         LinarcxImageToolTiper {
@@ -156,56 +137,17 @@ Window {
             onImageEntered: qToolTip.showMe(x, y, 2, qsTr("Settings"))
         }
     }
-    Connections {
-        target: qLC
-        onAllKeysReady: {
-            if (keys.length === 0) {
-                qStackView.push(initialPage)
-            } else {
-                for (var i in keys) {
-                    path = keys[i]
-                    qLC.hasConfig(keys[i])
-                }
-            }
-        }
 
-        onConfigFound: {
-            if (hasConfig) {
-                qLC.listTemplates(path)
-            } else {
-                qNotif.notificaitonTurnOn("qrc:/images/confetti.svg",
-                                          qsTr("There is no trinity.conf!"),
-                                          CONS.blue, 1)
-            }
-        }
+    Component {
+        id: qShortCut
 
-        onTemplatesReady: {
-            if (templates.length === 0) {
-                qNotif.notificaitonTurnOn(
-                            "qrc:/images/confetti.svg",
-                            qsTr("There is no template for generate."),
-                            CONS.blue, 1)
-            } else {
-                templatesArray = templates
-                qLC.templateInfo(path)
-            }
-        }
-
-        onTemplateInfoReady: {
-            if (templateInfo.length === 0) {
-                qNotif.notificaitonTurnOn("qrc:/images/confetti.svg",
-                                          qsTr("config file isn't valid!"),
-                                          CONS.blue, 1)
-            } else {
-                qModel.append({
-                                  "name": templateInfo[0],
-                                  "author": templateInfo[1],
-                                  "icon": path + "/" + templateInfo[2],
-                                  "comment": templateInfo[3],
-                                  "path": templateInfo[4]
-                              })
-                qLC.savePath(templateInfo[0], path)
-                qStackView.push(initialPage)
+        Shortcut {
+            id: scReloadQML
+            sequences: ["F5"]
+            context: Qt.WindowShortcut
+            onActivated: {
+                RuntimeQML.reload()
+                console.log("Reloading...")
             }
         }
     }
@@ -217,6 +159,21 @@ Window {
         window.maximumHeight = Screen.height
         window.x = Screen.width / 2 - window.minimumWidth / 2
         window.y = Screen.height / 2 - window.minimumHeight / 2
-        qLC.getAllKeys()
+        qStackView.push("qrc:/pages/ChooseNewTemplate.qml")
+
+        if (Qt.platform.os === 'android') {
+            console.log("Android Platfrom!")
+        } else if (Qt.platform.os === 'linux') {
+            console.log("Linux Platfrom!")
+        }
+        if (DEBUG_MODE) {
+            console.log("Debug Mode!")
+        } else {
+            console.log("Release Mode!")
+        }
+
+        console.log(engine)
+        console.log(app)
+        console.log(isRTL)
     }
 }

@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSharedPointer>
+#include <memory>
 
 #include "modules/core/dispatcher/dispatcherMacro.h"
 
@@ -14,6 +16,7 @@ class Dispatcher : public QObject {
 public:
     Dispatcher(QGuiApplication&, bool& isRTL, QObject* parent = nullptr);
     Dispatcher(QObject* parent = nullptr);
+    ~Dispatcher();
 
     void registerTypes();
     void execRunTimeQML();
@@ -37,17 +40,23 @@ public:
         return engine;
     }
 
+    static QSharedPointer<QQmlApplicationEngine> getMyEngine()
+    {
+        QSharedPointer<QQmlApplicationEngine> engine;
+        if (!engine) {
+            engine = QSharedPointer<QQmlApplicationEngine>(new QQmlApplicationEngine);
+        }
+        return engine;
+    }
+
     static QQmlContext* getContext()
     {
         static QQmlContext* context;
-        if (!context)
+        if (!context) {
             context = getEngine()->rootContext();
+        }
         return context;
     }
-
-private:
-    QQmlApplicationEngine* mEngine;
-    QQmlContext* mContext;
 
 signals:
     void cacheCleared();

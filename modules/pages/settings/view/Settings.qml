@@ -21,13 +21,18 @@ Page {
 
                                   })
 
-    SettingsClass {
-        id: mSettings
+    function checkTheme(currentText) {
+        if (currentText === "Material" || currentText === "Universal") {
+            chbDarkTheme.visible = true
+            //            chbDarkTheme.checked = false
+        } else {
+            chbDarkTheme.visible = false
+            //            chbDarkTheme.checked = false
+        }
     }
 
-    Component.onCompleted: {
-        console.log(isRTL)
-        console.log(app)
+    SettingsClass {
+        id: mSettings
     }
 
     ScrollView {
@@ -55,9 +60,28 @@ Page {
             anchors.topMargin: 5
             anchors.left: parent.left
             anchors.leftMargin: 10
+            onCurrentTextChanged: checkTheme(cbStyle.currentText)
             Component.onCompleted: {
                 JS.createCombo(mSettings.appStyles(),
                                mSettings.appStyleIndex(), svSettings, cbStyle)
+                checkTheme(cbStyle.currentText)
+            }
+        }
+
+        CheckBox {
+            id: chbDarkTheme
+            text: qsTr("Dark")
+            visible: false
+            anchors.left: cbStyle.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: cbStyle.verticalCenter
+
+            Component.onCompleted: {
+                if (mSettings.isDark()) {
+                    chbDarkTheme.checked = true
+                } else {
+                    chbDarkTheme.checked = false
+                }
             }
         }
 
@@ -126,7 +150,11 @@ Page {
             anchors.topMargin: 5
             anchors.left: parent.left
             anchors.leftMargin: 10
-            model: ["English", "Persian"]
+            Component.onCompleted: {
+                JS.createCombo(mSettings.languages(),
+                               mSettings.languageIndex(), svSettings,
+                               cbLanguages)
+            }
         }
     }
 
@@ -148,6 +176,14 @@ Page {
             mySettings.fontSize = cbFontSize.currentText
             mySettings.style = cbStyle.currentText
             mySettings.currentLanguage = cbLanguages.currentText
+            if (chbDarkTheme.checked && cbStyle.currentText == "Material") {
+                mySettings.darkMeterial = 1
+            }
+
+            if (chbDarkTheme.checked && cbStyle.currentText == "Universal") {
+                mySettings.darkUniversal = 1
+            }
+
             mSettings.setSettings(mySettings)
 
             var mDialog = mDialogChangeSettings.createObject(mSettingsContent)

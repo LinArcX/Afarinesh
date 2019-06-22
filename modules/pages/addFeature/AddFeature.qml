@@ -6,13 +6,12 @@ import "qrc:/fonts/fontAwesome/"
 import "qrc:/fonts/hack/"
 import "qrc:/js/Constants.js" as CONS
 
-Rectangle {
+Page {
     id: appPane
-    color: "white"
 
-    property var name
+    property var projectPath
 
-    Component.onCompleted: console.log(name)
+    Component.onCompleted: console.log(projectPath)
 
     LinarcxButton {
         id: btnGenerate

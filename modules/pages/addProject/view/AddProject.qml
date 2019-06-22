@@ -8,9 +8,8 @@ import "qrc:/fonts/fontAwesome/"
 import "qrc:/fonts/hack/"
 import "qrc:/js/Constants.js" as CONS
 
-Rectangle {
+Page {
     id: appPane
-    color: "white"
 
     property var targetPath
     property int tableItems
