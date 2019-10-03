@@ -34,8 +34,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 CONFIG(debug, debug|release) {
     # do debug things here
     # message("Copying to Debug Directroy!")
-    include(libs/runtimeqml/runtimeqml.pri)
-    DEFINES += "QRC_RUNTIME_SOURCE_PATH=\\\"$$PWD\\\""
+    #include(runtimeqml/runtimeqml.pri)
+    #DEFINES += "QRC_RUNTIME_SOURCE_PATH=\\\"$$PWD\\\""
 }
 CONFIG(release, debug|release) {
     # do release things here
