@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-Trinity.pro.user
+trinity.pro.user
 garbage/
 
 # Compiled Object files

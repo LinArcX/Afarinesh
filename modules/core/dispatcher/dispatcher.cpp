@@ -31,9 +31,9 @@ Dispatcher::Dispatcher(QGuiApplication& app, bool& isRTL, QObject* parent)
 #ifdef QT_DEBUG
     getContext()->setContextProperty("DEBUG_MODE", QVariant(true));
     getEngine()->load(QUrl(QLatin1String(MAIN_QML)));
-#else
-    getContext()->setContextProperty("RELEASE_MODE", QVariant(true));
-    execRunTimeQML();
+//#else
+//    getContext()->setContextProperty("RELEASE_MODE", QVariant(true));
+//    execRunTimeQML();
 #endif
 }
 

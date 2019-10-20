@@ -32,10 +32,10 @@ Page {
         id: qAPC
     }
 
-    SoundEffect {
-        id: sndProjectGenerated
-        source: "qrc:/sounds/Done.wav"
-    }
+   // SoundEffect {
+   //     id: sndProjectGenerated
+   //     source: "qrc:/sounds/Done.wav"
+   // }
 
     //----------------- File Chooser ------------------//
     LinArcxDialog {
@@ -78,7 +78,7 @@ Page {
         }
         onProjectGenerated: {
             btnGenerate.enabled = false
-            sndProjectGenerated.play()
+            //sndProjectGenerated.play()
             qNotif.notificaitonTurnOn()
         }
     }
